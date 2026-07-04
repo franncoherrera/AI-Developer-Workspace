@@ -20,6 +20,6 @@
 
 ## What NOT to Test
 
-- Framework internals (Angular change detection, Spring DI, Rails ActiveRecord)
+- Framework internals (Vue reactivity, CAP internals)
 - Generated code
 - Simple getters/setters

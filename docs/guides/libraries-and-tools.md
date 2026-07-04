@@ -15,15 +15,16 @@
 | **Snyk / Trivy** | Security scanning | All projects |
 | **Semantic Release** | Automated versioning | Libraries |
 
-## Angular
+## Accelerator SAP + Vue.js
 
 | Library | Purpose |
 |---------|---------|
-| **Angular CDK** | UI primitives (overlay, a11y, drag-drop) |
-| **Angular Material** | Component library |
-| **NgRx / SignalStore** | State management |
-| **RxJS** | Reactive programming (built-in) |
-| **Tailwind CSS** | Utility-first CSS |
-| **Vitest + Testing Library** | Testing |
-| **ESLint + Angular ESLint** | Linting |
-| **Compodoc** | Documentation |
+| **Vue 3 + Composition API** | Frontend framework |
+| **SAP CAP (cds)** | Backend framework (Node.js/Java) |
+| **SAP HANA Cloud** | Database |
+| **SAP Cloud SDK** | SAP API integration |
+| **XSUAA / IAS** | Authentication |
+| **Pinia** | State management |
+| **Fundamental Library / UI5** | Fiori UI components |
+| **Vitest** | Unit testing |
+| **@sap/cds-test** | CAP integration testing |

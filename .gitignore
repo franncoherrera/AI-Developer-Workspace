@@ -29,11 +29,6 @@ target/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 
-# Ruby / Rails
-vendor/bundle/
-.bundle/
-tmp/
-log/
 
 # Python
 __pycache__/

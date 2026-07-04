@@ -1,0 +1,17 @@
+{
+  "build": {
+    "target": "node"
+  },
+  "requires": {
+    "db": {
+      "kind": "sqlite",
+      "credentials": {
+        "database": "db/dev.sqlite"
+      }
+    },
+    "auth": {
+      "kind": "xsuaa"
+    },
+    "cors": true
+  }
+}

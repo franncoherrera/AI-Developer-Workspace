@@ -1,0 +1,21 @@
+{
+  "project": "Deprati",
+  "type": "pointer",
+  "env_var": {
+    "code": "DEPRATI_PROJECT_PATH",
+    "base": "DEPRATI_BASE_PROJECT_PATH"
+  },
+  "rules": [
+    "rules/global/AGENTS.md",
+    "rules/global/mandatory.md",
+    "rules/accelerator-sap-vue/AGENTS.md",
+    "projects/deprati/AGENTS.md"
+  ],
+  "agents": {
+    "default": {
+      "model": "default",
+      "ignore": ["node_modules", "target", "dist", ".git"],
+      "workdir": "${env:DEPRATI_PROJECT_PATH}"
+    }
+  }
+}

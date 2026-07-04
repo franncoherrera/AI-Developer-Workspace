@@ -1,6 +1,6 @@
 {
   "name": "filesystem",
-  "description": "Secure file system access for AI agents",
+  "description": "Secure file system access for AI agents — limitado al workspace root",
   "command": "npx",
   "args": [
     "-y",

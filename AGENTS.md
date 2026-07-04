@@ -33,8 +33,8 @@ When working on a task, context is resolved in this priority:
 
 1. `rules/global/mandatory.md` — non-negotiable rules
 2. `rules/global/AGENTS.md` — global best practices
-3. `rules/angular/AGENTS.md` — Angular-specific rules
-4. `projects/<project>/AGENTS.md` — project-specific context
+3. `projects/<project>/AGENTS.md` — **lee esto ANTES que las reglas de tecnología**. Aquí el proyecto declara su tecnología (eg: "accelerator-sap-vue") y el agente carga las reglas correspondientes.
+4. `rules/<technology>/AGENTS.md` — tech-specific rules (cargadas según lo que declaró el proyecto en el paso 3)
 5. `prompts/<category>/` — reusable prompts loaded as needed
 6. `knowledge-base/<topic>/` — reference material
 
@@ -43,7 +43,7 @@ When working on a task, context is resolved in this priority:
 - **Folders**: `kebab-case`
 - **Documents**: `PascalCase.md`
 - **Reusable partials**: `partial-*.md`
-- **Technology keys**: `angular` (por ahora; se agregarán más luego)
+- **Technology keys**: `accelerator-sap-vue`
 - **Each project has**: `AGENTS.md`, `rules/`, `prompts/` (if needed)
 
 ## How to Add a New Technology
@@ -56,7 +56,5 @@ When working on a task, context is resolved in this priority:
 
 ## How to Add a New Project
 
-1. `scripts/project/new-project.ps1 -Name <name> -Type <tech>`
-2. Or manually: copy `projects/_template/` to `projects/<name>/`
-3. Edit `projects/<name>/AGENTS.md` with project context
-4. Add entry to `projects/PROJECTS_INDEX.md`
+1. Create `projects/<name>/AGENTS.md` with project context
+2. Add entry to `projects/PROJECTS_INDEX.md`

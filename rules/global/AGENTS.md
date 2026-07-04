@@ -26,8 +26,9 @@ Apply these rules unless overridden by technology or project-specific rules.
 
 ## Project Context
 
-- Load `rules/<technology>/AGENTS.md` based on detected tech stack.
-- Load `projects/<name>/AGENTS.md` for project-specific context.
+- Load `projects/<name>/AGENTS.md` **first** — the project declares its technology here.
+- Based on the declared technology, load `rules/<technology>/AGENTS.md`.
+- If the project references a base project (e.g., `deprati_base`), load that too.
 - Check `prompts/<category>/` for reusable instructions when task matches.
 
 ## Error Handling

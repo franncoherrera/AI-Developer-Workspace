@@ -34,4 +34,4 @@ Domain (inner, no dependencies)
 
 | Tech | Domain | Application | Infrastructure |
 |------|--------|-------------|----------------|
-| Angular | Types, Store | Services, Facades | HTTP repos, NgRx effects |
+| Accelerator SAP + Vue | CDS entities, types | CAP services, handlers | Vue components, OData repos |

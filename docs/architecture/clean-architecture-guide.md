@@ -26,23 +26,19 @@
 - Framework controllers
 - Implements ports defined by inner layers
 
-## Example: Angular
+## Example: Accelerator SAP + Vue.js
 
 ```
-src/app/
-├── core/
-│   ├── domain/
-│   │   ├── models/
-│   │   ├── ports/
-│   │   └── services/
-│   └── application/
-│       ├── use-cases/
-│       └── ports/
-├── infrastructure/
+app/
+├── domain/                    → Entidades, interfaces de puertos
+│   ├── models/
+│   └── ports/
+├── application/               → Casos de uso
+│   └── use-cases/
+├── infrastructure/            → CAP OData clients, repositorios
 │   ├── repositories/
-│   ├── http/
-│   └── store/
-└── presentation/
+│   └── http/
+└── presentation/              → Componentes Vue
     ├── components/
     └── pages/
 ```

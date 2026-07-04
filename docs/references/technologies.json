@@ -1,0 +1,17 @@
+﻿{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "description": "Central registry of all supported technologies. Source of truth for scripts.",
+  "technologies": [
+    {
+      "key": "accelerator-sap-vue",
+      "name": "SAP CAP + Vue 3",
+      "status": "active",
+      "has": {
+        "rules": true,
+        "prompts": true,
+        "config": true,
+        "template": true
+      }
+    }
+  ]
+}

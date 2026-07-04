@@ -4,7 +4,7 @@
 
 - [x] Workspace structure design (layered architecture)
 - [x] Global rules and mandatory policies
-- [x] Technology-specific rules (Angular, Spring Boot, Node.js, Rails)
+- [x] Technology-specific rules (Accelerator SAP + Vue.js)
 - [x] Global reusable prompts
 - [x] Shared configurations (.editorconfig, .gitattributes, ESLint, Prettier)
 - [x] Project catalog and template structure
@@ -19,14 +19,9 @@
 
 ## Phase 2: Templates & Tooling (Next)
 
-- [ ] Complete Angular project template (standalone + signals)
-- [ ] Complete Spring Boot project template (hexagonal arch)
-- [ ] Complete Node.js project template (NestJS + Prisma)
-- [ ] Complete Ruby on Rails template (API-only + RSpec)
+- [ ] Complete SAP + Vue project template (Vue 3 + CAP + Fiori)
 - [ ] Library template (TypeScript dual ESM/CJS)
-- [ ] `new-project.ps1` fully working with all template options
 - [ ] VS Code / JetBrains IDE workspace config generator
-- [ ] Pre-commit hooks for linting, secrets scanning
 
 ## Phase 3: Knowledge & Automation
 
@@ -65,11 +60,4 @@
 - [ ] Cross-project impact analysis
 - [ ] Natural language workspace queries ("what's blocking project X?")
 
-## Future Tech Support
 
-- [ ] **Python** — Django, FastAPI, Flask
-- [ ] **Flutter** — Cross-platform mobile
-- [ ] **Go** — Go applications
-- [ ] **Next.js** — Full-stack React
-- [ ] **React Native** — Mobile apps
-- [ ] **Rust** — Systems programming

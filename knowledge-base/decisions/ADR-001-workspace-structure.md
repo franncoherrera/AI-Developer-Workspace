@@ -7,7 +7,7 @@
 ## Context
 
 We needed a workspace structure for AI-assisted development that:
-- Supports multiple technologies (Angular, Spring Boot, Node.js, Rails)
+- Supports Accelerator SAP + Vue.js projects
 - Scales to 100+ projects
 - Minimizes rule/prompt duplication
 - Is immediately understandable to any AI agent

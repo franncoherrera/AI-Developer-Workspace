@@ -5,7 +5,6 @@
 *.ts text diff=typescript
 *.js text diff=javascript
 *.java text diff=java
-*.rb text diff=ruby
 *.html text diff=html
 *.css text diff=css
 *.json text
@@ -23,7 +22,6 @@
 package-lock.json -diff
 yarn.lock -diff
 pnpm-lock.yaml -diff
-Gemfile.lock -diff
 
 # Line endings
 *.bat text eol=crlf

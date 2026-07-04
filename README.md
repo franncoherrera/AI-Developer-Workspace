@@ -46,7 +46,7 @@ Este workspace está diseñado para que asistentes de IA como **OpenCode**, **Cl
 | **Composable Rules** | Las reglas se componen desde partials reutilizables. Cero duplicación. |
 | **Self-Documenting** | Cada carpeta tiene un `AGENTS.md` o `README.md` que explica su propósito. |
 | **Tool-Agnostic** | Funciona con cualquier asistente de codificación IA. No hay dependencia de una herramienta específica. |
-| **Polyglot Ready** | Diseñado para soportar múltiples tecnologías. Actualmente Angular; arquitectura abierta para más. |
+| **Extensible** | Diseñado para soportar múltiples tecnologías. Actualmente Accelerator SAP + Vue.js; arquitectura abierta para más. |
 | **Scale Horizontally** | Los proyectos son carpetas planas dentro de `projects/`. Sin registros centrales más allá de un índice. |
 | **DRY Above All** | Las reglas globales se heredan; las de tecnología extienden; las de proyecto refinan. Nunca se repiten. |
 
@@ -68,7 +68,7 @@ ai-developer-workspace/
 │   │   ├── mandatory.md        #   Reglas no-negociables (seguridad, calidad, comportamiento AI)
 │   │   ├── AGENTS.md           #   Reglas globales de comunicación, workflow y git hygiene
 │   │   └── partials/           #   Fragmentos reutilizables (code-standards, testing)
-│   ├── angular/AGENTS.md       #   Reglas específicas: Standalone Components, Signals, NgRx
+│   ├── accelerator-sap-vue/AGENTS.md # Reglas: Vue 3 + CAP + SAP BTP + Fiori
 │   └── _template/AGENTS.md     #   Template para añadir nuevas tecnologías
 │
 ├── prompts/                    # ★ BIBLIOTECA DE PROMPTS REUTILIZABLES
@@ -78,7 +78,7 @@ ai-developer-workspace/
 │   │   └── partial-spec-review.md
 │   ├── code-review/            #   Prompts para PR descriptions
 │   ├── testing/                #   Prompts para unit tests
-│   └── angular/                 # Prompts específicos por tecnología
+│   └── accelerator-sap-vue/     #   Prompts específicos SAP + Vue
 │
 ├── knowledge-base/             # ★ CONOCIMIENTO PERSONAL (memoria del equipo)
 │   ├── architecture/           #   Diagramas, overviews, decisiones arquitectónicas
@@ -92,17 +92,16 @@ ai-developer-workspace/
 │
 ├── projects/                   # ★ CATÁLOGO DE PROYECTOS
 │   ├── PROJECTS_INDEX.md       #   Tabla maestro con todos los proyectos
-│   ├── _template/AGENTS.md     #   Template para incorporar un nuevo proyecto
-│   └── sandbox/AGENTS.md       #   Sandbox para pruebas y experimentación
+│   └── deprati/AGENTS.md       #   Proyecto activo: Deprati (SAP + Vue)
 │
 ├── templates/                  # ★ SCAFFOLDING DE PROYECTOS
-│   ├── _common/                #   Archivos base compartidos (README, gitignore, Makefile)
-│   └── angular/AGENTS.md       #   Template: Angular 17+ standalone components + signals
+│   ├── _common/                #   Archivos base compartidos
+│   └── accelerator-sap-vue/AGENTS.md # Template: Vue 3 + CAP + SAP BTP
 │
 ├── config/                     # ★ CONFIGURACIONES COMPARTIDAS
 │   ├── shared/                 #   .editorconfig, .gitattributes, commitlint
 │   │   └── commitlint.config.js
-│   └── angular/.eslintrc.json  #   ESLint + Angular ESLint rules
+│   └── accelerator-sap-vue/.prettierrc  #   Prettier + CDS config for SAP Vue
 │       └── .vscode-extensions.json
 │
 ├── scripts/                    # ★ AUTOMATIZACIONES
@@ -111,11 +110,8 @@ ai-developer-workspace/
 │   └── utils/validate-rules.ps1#   Validador de integridad de reglas
 │
 ├── docker/                     # ★ CONTENEDORES
-│   ├── docker-compose.yml      #   Servicios compartidos (PostgreSQL, Redis, MailCatcher)
-│   ├── images/                 #   Dockerfile de referencia multi-stage
-│   │   └── Dockerfile.node
-│   ├── services/               #   Configuraciones de servicios individuales
-│   └── compose/                #   Docker Compose específicos por escenario
+│   └── images/                 #   Dockerfile de referencia multi-stage
+│       └── Dockerfile.node
 │
 ├── mcp/                        # ★ MCP SERVERS (Model Context Protocol)
 │   ├── README.md               #   Documentación de MCP
@@ -169,22 +165,27 @@ El workspace organiza el contexto en **5 capas** con especificidad creciente. Ca
 │ ├── config/shared/               → Configs cross-tech            │
 │ └── scripts/shared/              → Automatizaciones globales     │
 ├──────────────────────────────────────────────────────────────────┤
-│ CAPA 2: TECHNOLOGY (rules/<tech>/)                                │
-│ ├── rules/angular/AGENTS.md      → Si el proyecto es Angular     │
+│ CAPA 2: PROJECT DISPATCH (projects/<project>/AGENTS.md)          │
+│ ├── El proyecto declara su tecnología aquí                       │
+│ └── "Technology: accelerator-sap-vue" → carga rules/accelerator-sap-vue/ │
+│ └── "Technology: accelerator-sap-vue" → carga rules/sap-vue/    │
 ├──────────────────────────────────────────────────────────────────┤
-│ CAPA 3: PROJECT (projects/<project-name>/)                        │
-│ ├── AGENTS.md                    → Descripción, metas, equipo     │
+│ CAPA 3: TECHNOLOGY (rules/<tech>/)                                │
+│ ├── rules/accelerator-sap-vue/AGENTS.md   → Reglas SAP + Vue     │
+├──────────────────────────────────────────────────────────────────┤
+│ CAPA 4: PROJECT (projects/<project-name>/)                        │
+│ ├── AGENTS.md                    → (ya leído en dispatch)        │
 │ ├── rules/                       → Reglas específicas del proyecto│
 │ ├── prompts/                     → Prompts específicos            │
 │ └── specs/                       → Especificaciones del proyecto  │
 ├──────────────────────────────────────────────────────────────────┤
-│ CAPA 4: SPRINT (projects/<project>/sprints/<sprint-n>/)           │
+│ CAPA 5: SPRINT (projects/<project>/sprints/<sprint-n>/)           │
 │ ├── sprint-goals.md              → Meta del sprint               │
 │ ├── tasks.md                     → Desglose de tareas            │
 │ ├── progress.md                  → Log diario del agente AI      │
 │ └── retrospective.md             → Notas de retrospectiva        │
 ├──────────────────────────────────────────────────────────────────┤
-│ CAPA 5: TASK (dentro del código)                                  │
+│ CAPA 6: TASK (dentro del código)                                  │
 │ ├── .spec.md                     → Especificación de la tarea    │
 │ ├── implementation.md            → Plan de implementación        │
 │ └── notes.md                     → Notas de trabajo              │
@@ -197,8 +198,8 @@ Cuando un agente IA comienza una tarea, resuelve el contexto en este orden:
 
 1. `rules/global/mandatory.md` — reglas no-negociables (seguridad, calidad)
 2. `rules/global/AGENTS.md` — buenas prácticas globales
-3. `rules/angular/AGENTS.md` — reglas específicas de Angular
-4. `projects/<project>/AGENTS.md` — contexto específico del proyecto
+3. `projects/<project>/AGENTS.md` — **el proyecto declara su tecnología aquí** (ej: "accelerator-sap-vue"). El agente lee esto ANTES de las reglas de tecnología.
+4. `rules/<technology>/AGENTS.md` — reglas específicas cargadas según lo que el proyecto declaró en el paso 3
 5. `prompts/<category>/` — prompts reutilizables según el tipo de tarea
 6. `knowledge-base/<topic>/` — material de referencia según necesidad
 
@@ -206,9 +207,11 @@ Cuando un agente IA comienza una tarea, resuelve el contexto en este orden:
 
 ```
 Global Rules (siempre cargadas)
-  └── Technology Rules (cargadas si se detecta la tecnología)
-       └── Project Rules (cargadas si existen)
-            └── Task Context (instrucciones de la tarea actual)
+  └── Project AGENTS.md (declara tecnología → dispacha a tech rules)
+       └── Technology Rules (cargadas según lo que declaró el proyecto)
+            └── Project Base Rules (si existen, ej: deprati_base)
+                 └── Project Rules (específicas del proyecto)
+                      └── Task Context (instrucciones de la tarea)
 ```
 
 Las capas superiores pueden **refinar pero no anular** las reglas obligatorias de las capas inferiores.
@@ -219,23 +222,9 @@ Las capas superiores pueden **refinar pero no anular** las reglas obligatorias d
 
 | Tecnología | Versión | Framework/Build | Estado |
 |-----------|---------|-----------------|--------|
-| **Angular** | 17+ | Angular CLI, Standalone Components, Signals | ✅ Active |
+| **Accelerator SAP + Vue.js** | — | Vue 3 + CAP + SAP BTP, Fiori Design | ✅ Active |
 
-### Tecnologías Planificadas
 
-| Tecnología | Prioridad |
-|-----------|-----------|
-| Spring Boot 3.x | Alta |
-| Node.js 20+ | Alta |
-| Ruby on Rails 7+ | Alta |
-| Python (Django / FastAPI) | Media |
-| Flutter / Dart | Media |
-| Go (Gin / Echo) | Media |
-| Next.js | Media |
-| React Native | Baja |
-| Rust | Baja |
-
-Cada tecnología tiene su propio conjunto de reglas (`rules/<tech>/`), prompts (`prompts/<tech>/`), configuraciones (`config/<tech>/`) y templates (`templates/<tech>/`). Actualmente solo Angular está activo; las demás se agregarán en fases futuras.
 
 ---
 
@@ -266,19 +255,11 @@ cd ai-developer-workspace
 
 ```powershell
 # Opción 1: Usar script automatizado
-.\scripts\project\new-project.ps1 -Name "mi-app" -Type "angular"
+.\scripts\project\new-project.ps1 -Name "mi-app" -Type "accelerator-sap-vue"
 
-# Opción 2: Manual (copiar template)
-Copy-Item -Recurse projects/_template projects/mi-api
-# Editar projects/mi-api/AGENTS.md con el contexto del proyecto
 ```
 
-### Iniciar Servicios Compartidos
 
-```powershell
-docker compose -f docker/docker-compose.yml up -d
-# Inicia PostgreSQL, Redis y MailCatcher para desarrollo local
-```
 
 ---
 
@@ -303,8 +284,8 @@ Las reglas se mapean a `.cursorrules` o se configuran en el IDE. Workspace setti
 ```
 1. Leer AGENTS.md (raíz)             → Contexto general
 2. Leer rules/global/mandatory.md    → Reglas no-negociables
-3. Cargar rules/angular/AGENTS.md  → Reglas específicas de Angular
-4. Leer projects/<proyecto>/AGENTS.md→ Contexto específico
+3. Leer projects/<proyecto>/AGENTS.md→ **Declara la tecnología** → el agente sabe qué rules cargar después
+4. Cargar rules/<tech>/AGENTS.md   → Reglas de la tecnología (SAP+Vue, etc.)
 5. Si aplica, cargar prompt parcial  → prompts/<categoria>/partial-*.md
 6. Consultar knowledge-base/         → Si necesita referencias
 ```
@@ -333,7 +314,7 @@ Estas reglas **siempre** aplican. Ningún agente o desarrollador puede evitarlas
 
 Cada tecnología tiene su propio `rules/<tech>/AGENTS.md` con:
 
-- **Angular**: Standalone Components, Signals, NgRx/SignalStore, RxJS patterns, TestBed testing
+- **Accelerator SAP + Vue.js**: Vue 3 Composition API + CAP (CDS, OData, HANA), Pinia, SAP Fiori / Fundamental Library, XSUAA, SAP BTP deploy
 
 ---
 
@@ -409,16 +390,9 @@ Los proyectos externos pueden referenciar el workspace via:
 
 ## Templates de Proyectos
 
-| Template | Descripción | Variantes |
-|----------|-------------|-----------|
-| `angular/` | Angular 17+ standalone + signals + Material | SSR opcional, CSS framework configurable |
-
-Cada template incluye:
-- Estructura de carpetas recomendada
-- Configuraciones de build, lint y test
-- Dockerfile multi-stage
-- CI/CD workflow (GitHub Actions)
-- Documentación inicial (README, CHANGELOG, CONTRIBUTING)
+| Template | Descripción |
+|----------|-------------|
+| `accelerator-sap-vue/` | Vue 3 + CAP + SAP BTP + Fiori |
 
 ---
 
@@ -436,12 +410,12 @@ Cada template incluye:
 
 | Archivo | Propósito |
 |---------|-----------|
-| `config/angular/.eslintrc.json` | ESLint + Angular ESLint rules |
+| `config/accelerator-sap-vue/.prettierrc` | Prettier config para SAP Vue |
 | `config/ide/.vscode-extensions.json` | Extensiones VSCode recomendadas |
 
 ### IDE Settings Recomendados
 
-Las extensiones VSCode recomendadas incluyen: Angular Language Service, ESLint, Prettier, Docker, GitHub Actions, GitLens, Markdown All-in-One.
+Las extensiones VSCode recomendadas incluyen: Volar (Vue), ESLint, Prettier, Docker, GitHub Actions, GitLens, Markdown All-in-One, SAP CDS Language Support.
 
 ---
 
@@ -458,7 +432,7 @@ Ejemplos:
   refactor(checkout): extract payment validation
   test(order): add unit tests for OrderService
   docs(api): update OpenAPI spec
-  chore(deps): upgrade angular to 18.0.0
+  chore(deps): upgrade @sap/cds to 8.0.0
   perf(query): optimize N+1 in OrderRepository
   style(lint): fix formatting issues
 ```
@@ -495,31 +469,6 @@ El workspace incluye un pre-commit hook en `workflows/hooks/pre-commit.ps1` que:
 ---
 
 ## Integración con Docker
-
-### Servicios Compartidos (`docker/docker-compose.yml`)
-
-```yaml
-services:
-  postgres:   # PostgreSQL 16 para todos los proyectos
-  redis:      # Redis 7 para caching y colas
-  mailcatcher:# SMTP interceptador para desarrollo
-```
-
-### Uso
-
-```powershell
-# Iniciar todos los servicios
-docker compose -f docker/docker-compose.yml up -d
-
-# Iniciar solo PostgreSQL
-docker compose -f docker/docker-compose.yml up -d postgres
-
-# Ver logs
-docker compose -f docker/docker-compose.yml logs -f
-
-# Detener
-docker compose -f docker/docker-compose.yml down
-```
 
 ### Dockerfiles de Referencia
 
@@ -572,7 +521,7 @@ mcp/
 
 ## Integración con Clean Architecture
 
-El workspace incluye una guía de Clean Architecture adaptada a Angular.
+El workspace incluye una guía de Clean Architecture adaptada a Accelerator SAP + Vue.js.
 
 ### Principio Fundamental
 
@@ -700,7 +649,7 @@ projects/<project>/
 
 | Script | Propósito | Uso |
 |--------|-----------|-----|
-| `scripts/project/new-project.ps1` | Scaffolding de nuevos proyectos desde template | `.\scripts\project\new-project.ps1 -Name "x" -Type "angular"` |
+| `scripts/project/new-project.ps1` | Scaffolding de nuevos proyectos desde template | `.\scripts\project\new-project.ps1 -Name "x" -Type "accelerator-sap-vue"` |
 | `scripts/shared/setup-workspace.ps1` | Setup inicial del workspace (dirs, hooks, prereqs) | `.\scripts\shared\setup-workspace.ps1` |
 | `scripts/utils/validate-rules.ps1` | Valida que todas las reglas cumplan el formato requerido | `.\scripts\utils\validate-rules.ps1` |
 | `workflows/hooks/pre-commit.ps1` | Pre-commit hook: secret scanning + large file detection | Se instala automáticamente |
@@ -709,8 +658,8 @@ projects/<project>/
 ### new-project.ps1
 
 ```powershell
-# Crear proyecto Angular
-.\scripts\project\new-project.ps1 -Name "frontend-app" -Type "angular"
+# Crear proyecto SAP + Vue
+.\scripts\project\new-project.ps1 -Name "frontend-app" -Type "accelerator-sap-vue"
 
 # (más tecnologías disponibles cuando se agreguen al workspace)
 
@@ -726,7 +675,7 @@ projects/<project>/
 
 - [x] Diseño de estructura (arquitectura en 5 capas)
 - [x] Reglas globales y políticas obligatorias
-- [x] Reglas por tecnología (Angular, Spring Boot, Node.js, Rails)
+- [x] Reglas por tecnología (Accelerator SAP + Vue.js)
 - [x] Prompts reutilizables globales
 - [x] Configuraciones compartidas (.editorconfig, .gitattributes, ESLint, Prettier)
 - [x] Catálogo de proyectos y estructura de templates
@@ -741,12 +690,8 @@ projects/<project>/
 
 ### Phase 2: Templates & Tooling (Siguiente)
 
-- [ ] Template Angular completo (standalone + signals + Material)
-- [ ] Template Spring Boot completo (hexagonal + JPA + Testcontainers)
-- [ ] Template Node.js completo (NestJS + Prisma + Vitest)
-- [ ] Template Rails completo (API-only + RSpec + Sidekiq)
+- [ ] Template SAP + Vue completo (Vue 3 + CAP + Fiori)
 - [ ] Template librería (TypeScript dual ESM/CJS)
-- [ ] `new-project.ps1` funcional con todas las opciones
 - [ ] Generador de configs IDE (VSCode, JetBrains)
 
 ### Phase 3: Knowledge & Automation
@@ -781,68 +726,7 @@ projects/<project>/
 
 ## Cómo Agregar una Nueva Tecnología
 
-Agregar soporte para una nueva tecnología toma aproximadamente **5 minutos** y requiere crear 4 carpetas:
-
-```powershell
-# 1. Elegir key en kebab-case (ej: "flutter", "next-js", "fastapi")
-$tech = "flutter"
-
-# 2. Crear reglas
-New-Item -ItemType Directory -Path "rules/$tech"
-@"
-# $tech Rules
-
-## Architecture
-...
-"@ | Set-Content -Path "rules/$tech/AGENTS.md"
-
-# 3. Crear prompts
-New-Item -ItemType Directory -Path "prompts/$tech"
-
-# 4. Crear configuraciones
-New-Item -ItemType Directory -Path "config/$tech"
-
-# 5. Crear template
-New-Item -ItemType Directory -Path "templates/$tech"
-@"
-# $tech Project Template
-...
-"@ | Set-Content -Path "templates/$tech/AGENTS.md"
-
-# 6. Registrar en el registro de tecnologías
-# Editar docs/references/technologies.md
-
-# 7. Validar
-.\scripts\utils\validate-rules.ps1
-```
-
-### Plantilla para `rules/<tech>/AGENTS.md`
-
-```markdown
-# <Technology> Rules
-
-## Architecture
-- Patrón arquitectónico recomendado
-- Convenciones de estructura de carpetas
-
-## Conventions
-- Naming de archivos, clases, funciones
-- Estilo de código específico
-
-## Testing
-- Framework de testing preferido
-- Estructura de tests y coverage
-
-## Build & Tooling
-- Sistema de build
-- Package manager
-- CLI commands recomendados
-
-## Common Pitfalls
-- Anti-patrones a evitar
-- APIs deprecadas
-- Tips de migración
-```
+Ver `docs/guides/how-to-add-technology.md`.
 
 ---
 
@@ -851,31 +735,23 @@ New-Item -ItemType Directory -Path "templates/$tech"
 ### Opción 1: Script Automatizado
 
 ```powershell
-.\scripts\project\new-project.ps1 -Name "mi-proyecto" -Type "angular"
+.\scripts\project\new-project.ps1 -Name "mi-proyecto" -Type "accelerator-sap-vue"
 ```
 
 Esto crea `projects/mi-proyecto/` con:
 - `AGENTS.md` con datos básicos del proyecto
 - Subdirectorios `docs/`, `scripts/`, `rules/`, `specs/`
-- Template files copiados desde `templates/angular/`
+- Template files copiados desde `templates/<tech>/`
 - Entrada añadida a `projects/PROJECTS_INDEX.md`
 
 ### Opción 2: Manual
 
 ```powershell
-# 1. Copiar template
-Copy-Item -Recurse projects/_template projects/mi-proyecto
+# 1. Crear carpeta
+New-Item -ItemType Directory -Path projects/mi-proyecto
 
-# 2. Editar AGENTS.md
-#    - Nombre del proyecto
-#    - Descripción
-#    - Tech stack
-#    - Arquitectura
-#    - Equipo y contactos
-#    - Links (issue tracker, CI/CD, staging)
-
-# 3. Agregar al índice
-#    Editar projects/PROJECTS_INDEX.md
+# 2. Crear AGENTS.md con contexto del proyecto
+# 3. Agregar al índice en projects/PROJECTS_INDEX.md
 ```
 
 ### Estructura Mínima de un Proyecto
@@ -1011,21 +887,21 @@ docs(readme): update MCP integration section
 
 | Elemento | Convención | Ejemplo |
 |----------|-----------|---------|
-| **Carpetas** | `kebab-case` | `knowledge-base`, `angular` |
+| **Carpetas** | `kebab-case` | `knowledge-base` |
 | **Documentos** | `PascalCase.md` | `ARCHITECTURE.md`, `ROADMAP.md`, `ADR-001.md` |
 | **Prompts parciales** | `partial-*.md` | `partial-code-review.md`, `partial-unit-test.md` |
-| **Keys de tecnología** | `kebab-case` | `angular` (por ahora; se agregarán más luego) |
+| **Keys de tecnología** | `kebab-case` | `accelerator-sap-vue` |
 | **Nombres de proyecto** | `kebab-case` | `my-app`, `frontend-app` |
 | **Nombres de script** | `kebab-case.ps1` | `new-project.ps1`, `setup-workspace.ps1` |
 | **Archivos de reglas** | `AGENTS.md` | Siempre `AGENTS.md` (para descubrimiento automático) |
 | **READMEs** | `README.md` | Solo para documentación de usuario |
 | **Configuraciones** | `.prettierrc`, `.eslintrc.json` | Convención de la herramienta |
 | **Archivos Docker** | `Dockerfile.<tech>` | `Dockerfile.node` |
-| **Nombres de servicio Docker** | `kebab-case` | `docker-compose.yml` |
+| **Nombres de servicio Docker** | `kebab-case` | `docker-compose.yml` (ejemplo genérico) |
 | **Archivos de workflow** | `*.yml` | `ci.yml`, `deploy.yml` |
 | **Archivos de MCP** | `kebab-case.json` | `filesystem.json`, `github.json` |
 | **Archivos de spec** | `kebab-case.md` | `feature-spec.md`, `architecture-decision.md` |
-| **Extensiones** | Específicas del lenguaje | `.ts`, `.java`, `.rb`, `.py` |
+| **Extensiones** | Específicas del lenguaje | `.ts`, `.vue`, `.java`, `.cds` |
 | **Archivos de proyecto** | `AGENTS.md`, `PROJECTS_INDEX.md` | PascalCase para documentos de metadatos |
 
 ---
@@ -1046,21 +922,11 @@ docs(readme): update MCP integration section
 | **Snyk / Trivy** | Escaneo de seguridad |
 | **Testcontainers** | Contenedores para tests de integración |
 
-### Angular
+### Accelerator SAP + Vue.js
 
-Angular CDK, Angular Material, NgRx / SignalStore, RxJS, Tailwind CSS, Vitest + Testing Library, ESLint, Compodoc.
+Vue 3 + Composition API, SAP CAP (cds), Pinia, Fundamental Library / UI5, SAP Cloud SDK, Vitest, @sap/cds-test.
 
-### Spring Boot
 
-SpringDoc OpenAPI, MapStruct, Lombok, Flyway, Testcontainers, REST Assured, JaCoCo, Checkstyle / SpotBugs.
-
-### Node.js
-
-Express / Fastify / NestJS, Drizzle ORM / Prisma, Pino, Zod, Vitest, TSup / ESBuild, Husky + Lint-Staged.
-
-### Ruby on Rails
-
-Devise + Devise JWT, Pundit, Sidekiq, RSpec + FactoryBot, RuboCop, Alba / Blueprinter, Rswag.
 
 ---
 

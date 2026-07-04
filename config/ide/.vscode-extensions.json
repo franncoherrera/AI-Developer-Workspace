@@ -1,12 +1,8 @@
 {
   "recommendations": [
-    "angular.ng-template",
-    "nrwl.angular-console",
-    "vscjava.vscode-java-pack",
-    "vmware.vscode-boot-dev-pack",
+    "vue.volar",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss",
     "ms-azuretools.vscode-docker",
     "github.vscode-github-actions",
     "eamodio.gitlens",
@@ -14,8 +10,7 @@
     "bierner.markdown-mermaid",
     "yzane.markdown-pdf",
     "yzhang.markdown-all-in-one",
-    "shopify.ruby-lsp",
-    "rebornix.ruby",
-    "ms-vscode-remote.remote-containers"
+    "ms-vscode-remote.remote-containers",
+    "sapse.vscode-cds"
   ]
 }
