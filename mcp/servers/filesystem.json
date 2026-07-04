@@ -1,0 +1,12 @@
+{
+  "name": "filesystem",
+  "description": "Secure file system access for AI agents",
+  "command": "npx",
+  "args": [
+    "-y",
+    "@modelcontextprotocol/server-filesystem",
+    "D:\\Programación\\AI-Developer-Workspace"
+  ],
+  "env": {},
+  "disabled": false
+}

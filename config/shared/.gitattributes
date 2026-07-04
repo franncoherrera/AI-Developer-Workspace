@@ -1,0 +1,31 @@
+# Auto detect text files and perform normalization
+* text=auto
+
+# Source code
+*.ts text diff=typescript
+*.js text diff=javascript
+*.java text diff=java
+*.rb text diff=ruby
+*.html text diff=html
+*.css text diff=css
+*.json text
+*.yml text
+*.yaml text
+*.md text diff=markdown
+
+# Binaries
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff2 binary
+
+# Lock files
+package-lock.json -diff
+yarn.lock -diff
+pnpm-lock.yaml -diff
+Gemfile.lock -diff
+
+# Line endings
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.sh text eol=lf

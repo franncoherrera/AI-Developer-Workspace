@@ -1,0 +1,67 @@
+# Workspace gitignore
+# Ignore generated and transient files
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# IDE
+.idea/
+*.iml
+.vscode/settings.json
+.vscode/workspace.xml
+*.sublime-workspace
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.yarn/
+
+# Java / Maven / Gradle
+target/
+*.class
+*.jar
+*.war
+*.ear
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Ruby / Rails
+vendor/bundle/
+.bundle/
+tmp/
+log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Docker
+.docker/
+
+# Secrets (keep these out!)
+.env
+.env.local
+*.key
+*.pem
+*.crt
+secrets/
+
+# Large files
+*.log
+*.tsv
+*.csv
+*.sql
+
+# Project specific overrides (each project manages its own)
+projects/*/node_modules/
+projects/*/target/
+projects/*/build/
+projects/*/dist/
+projects/*/.env

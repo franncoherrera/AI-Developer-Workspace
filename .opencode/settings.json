@@ -1,0 +1,23 @@
+{
+  "workspace": "AI Developer Workspace",
+  "version": "1.0.0",
+  "agents": {
+    "default": {
+      "model": "default",
+      "rules": ["rules/global/AGENTS.md", "rules/global/mandatory.md"],
+      "ignore": ["node_modules", "target", "dist", ".git"]
+    }
+  },
+  "permissions": {
+    "default_approval": "auto",
+    "dangerous_actions": "ask"
+  },
+  "skills": {
+    "auto_load": true,
+    "path": ".opencode/skills"
+  },
+  "mcp": {
+    "servers_path": "mcp/servers",
+    "auto_discover": true
+  }
+}
