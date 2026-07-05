@@ -17,14 +17,10 @@ rules/         → Hierarchical rules: global > technology > project
 prompts/       → Reusable prompt library (composable partials)
 knowledge-base/→ Personal knowledge: ADRs, patterns, learnings, cheatsheets
 projects/      → Project catalog (each subfolder is a project)
-templates/     → Project scaffolding templates
 config/        → Shared tool configurations (ESLint, Prettier, editorconfig)
 scripts/       → Automation and utility scripts
-docker/        → Docker Compose services + Dockerfiles
 mcp/           → MCP server definitions and tool configurations
 docs/          → Technical documentation, architecture, guides
-specs/         → Spec-driven development templates and project specs
-workflows/     → CI/CD pipelines and git hooks
 ```
 
 ## Context Resolution Order
@@ -51,8 +47,7 @@ When working on a task, context is resolved in this priority:
 1. Create `rules/<tech>/AGENTS.md`
 2. Create `prompts/<tech>/`
 3. Create `config/<tech>/`
-4. Create `templates/<tech>/`
-5. Register in `docs/references/technologies.md`
+4. Register in `docs/references/technologies.md`
 
 ## How to Add a New Project
 

@@ -11,9 +11,6 @@ Each project may contain:
 ```
 projects/<project>/
 ├── AGENTS.md                    # Project context (epic-level)
-├── specs/
-│   ├── features/               # Feature specifications (user stories)
-│   └── backlog/                # Refined backlog items
 ├── sprints/
 │   ├── sprint-01/
 │   │   ├── sprint-goals.md     # Sprint goal and scope
@@ -30,7 +27,7 @@ projects/<project>/
 ## Sprint Workflow
 
 ### Sprint Planning
-1. Product Owner writes specs in `specs/features/`
+1. Product Owner writes feature specs
 2. AI refines acceptance criteria
 3. Tasks are broken down and stored in sprint folder
 
@@ -45,15 +42,6 @@ projects/<project>/
 2. Team reviews demo/outcomes
 3. Retro notes captured in `retrospective.md`
 4. Improvements applied to next sprint
-
-## Backlog Management
-
-```
-specs/backlog/
-├── icebox/         # Ideas, not yet refined
-├── refined/        # Ready for sprint planning
-└── in-progress/    # Currently being worked on
-```
 
 ## Scrum Ceremonies (AI-Assisted)
 

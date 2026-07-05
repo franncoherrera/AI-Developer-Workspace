@@ -11,7 +11,7 @@ El proyecto tiene en su `AGENTS.md`: `**Esta carpeta es un PUNTERO**` o un campo
 1. Leer la variable de entorno del proyecto (ej: `$DEPRATI_PROJECT_PATH`)
 2. Si no existe → preguntar al usuario y sugerir que la defina
 3. Si la carpeta no existe → error, avisar al usuario
-4. **Todo el trabajo** (leer, escribir, tests, git) se hace desde la ruta de la variable
+4. **Todo el trabajo** (leer, escribir, git) se hace desde la ruta de la variable
 5. No modificar archivos dentro de `projects/<nombre>/` ni su base
 
 ## Validación

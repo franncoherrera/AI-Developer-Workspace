@@ -15,11 +15,11 @@ mcp/
 
 Los MCP servers que están en `$DEPRATI_BASE_PROJECT_PATH` se vinculan automáticamente:
 
-```powershell
-.\scripts\mcp\sync-external.ps1
+```bash
+./scripts/mcp/sync.sh deprati
 ```
 
-Esto crea symlinks en `mcp/servers/ext.*.json` apuntando a los archivos originales.
+Esto crea symlinks en `mcp/servers/ext.*.json` apuntando a los archivos originales del proyecto.
 El `auto_discover` de OpenCode los levanta sin copiar nada.
 
 ## Agregar un server local
@@ -29,8 +29,8 @@ Crear `servers/<name>.json`:
 ```json
 {
   "name": "my-server",
-  "command": "node",
-  "args": ["path/to/server.js"],
+  "command": "bash",
+  "args": ["-c", "node \"$RUTA_PROYECTO/dist/server.js\""],
   "env": { "MY_VAR": "value" }
 }
 ```

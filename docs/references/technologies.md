@@ -9,6 +9,6 @@
 
 ## Adding a Technology
 
-```powershell
-.\scripts\utils\register-technology.ps1 -Key "my-tech" -Name "My Tech"
+```bash
+./scripts/utils/register-technology.sh my-tech "My Tech"
 ```

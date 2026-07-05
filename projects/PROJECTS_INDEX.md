@@ -8,7 +8,7 @@
 
 ## Add a Project
 
-1. Run: `scripts/project/new-project.ps1 -Name "<name>" -Type <tech>`
+1. Run: `./scripts/project/new-project.sh <name> <tech>`
 2. Or create `projects/<name>/` manually
 3. Fill in `AGENTS.md` with project context
 4. Add entry to this table
