@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 # scripts/mcp/sync.sh
 # Description: Sincroniza definiciones de MCP servers desde un proyecto externo
-#   hacia mcp/servers/. Soporta dos formatos:
-#     1) Archivos .json individuales en .opencode/mcp/servers/ (symlink)
-#     2) .mcp.json en la raíz del proyecto externo (conversión automática a
-#        formato OpenCode, con prefijo ext.)
+#   hacia mcp/servers/. Soporta un formato:
+#     Archivos .json individuales en .opencode/mcp/servers/ (symlink con prefijo ext.)
 # Usage: ./scripts/mcp/sync.sh <project>
 #   project — nombre del proyecto en projects/
 # Depends: jq

@@ -428,7 +428,7 @@ Los paths de los servidores usan variables de entorno (`$DEPRATI_BASE_PROJECT_PA
 ./scripts/mcp/sync.sh deprati
 ```
 
-Esto enlaza los MCP servers definidos en `$DEPRATI_BASE_PROJECT_PATH/.opencode/mcp/servers/` como `ext.*.json` en `mcp/servers/`.
+Esto crea symlinks `ext.*.json` desde `$DEPRATI_BASE_PROJECT_PATH/.opencode/mcp/servers/`.
 
 ### Agregar un Servidor
 
@@ -565,7 +565,7 @@ projects/<project>/
 | `scripts/doctor.sh` | Diagnóstico completo del workspace. Verifica variables de entorno, directorios externos, MCP servers, estructura de reglas, y dependencias. | `./scripts/doctor.sh [project]` |
 | `scripts/hooks/pre-commit.sh` | Pre-commit hook que regenera automáticamente docs/guide/scripts-reference.md cuando hay cambios en scripts/. Instalado por setup-workspace.sh como symlink en .git/hooks/pre-commit. | `(se ejecuta automáticamente en git commit)` |
 | `scripts/knowledge/sync.sh` | Sincroniza symlinks en knowledge-base/_proyectos/ con las variables de entorno *_BASE_PROJECT_PATH. Crea enlaces a la documentación externa de cada proyecto (specs, ADRs, docs, rules). | `./scripts/knowledge/sync.sh` |
-| `scripts/mcp/sync.sh` | Sincroniza definiciones de MCP servers desde un proyecto externo hacia mcp/servers/. Soporta dos formatos:   1) Archivos .json individuales en .opencode/mcp/servers/ (symlink)   2) .mcp.json en la raíz del proyecto externo (conversión automática a      formato OpenCode, con prefijo ext.) | `./scripts/mcp/sync.sh <project>` |
+| `scripts/mcp/sync.sh` | Sincroniza definiciones de MCP servers desde un proyecto externo hacia mcp/servers/. Soporta un formato:   Archivos .json individuales en .opencode/mcp/servers/ (symlink con prefijo ext.) | `./scripts/mcp/sync.sh <project>` |
 | `scripts/project/new-project.sh` | Crea un nuevo proyecto a partir de un template registrado en technologies.json. Copia la estructura del template, genera AGENTS.md, y actualiza PROJECTS_INDEX.md. | `./scripts/project/new-project.sh <name> <type> [path]` |
 | `scripts/shared/setup-workspace.sh` | Setup inicial del workspace. Verifica prerequisitos (git, docker, jq, node) y crea los directorios base necesarios. | `./scripts/shared/setup-workspace.sh` |
 | `scripts/utils/register-technology.sh` | Registra una nueva tecnología en el workspace. Crea las carpetas en rules/, prompts/, config/, templates/ y añade la entrada en technologies.json. | `./scripts/utils/register-technology.sh <key> <name>` |

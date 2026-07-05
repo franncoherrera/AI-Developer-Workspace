@@ -95,7 +95,7 @@ Sincroniza symlinks en knowledge-base/_proyectos/ con las variables de entorno *
 
 ## `scripts/mcp/sync.sh`
 
-Sincroniza definiciones de MCP servers desde un proyecto externo hacia mcp/servers/. Soporta dos formatos:   1) Archivos .json individuales en .opencode/mcp/servers/ (symlink)   2) .mcp.json en la raíz del proyecto externo (conversión automática a      formato OpenCode, con prefijo ext.)
+Sincroniza definiciones de MCP servers desde un proyecto externo hacia mcp/servers/. Soporta un formato:   Archivos .json individuales en .opencode/mcp/servers/ (symlink con prefijo ext.)
 
 **Uso:** `./scripts/mcp/sync.sh <project>`
 

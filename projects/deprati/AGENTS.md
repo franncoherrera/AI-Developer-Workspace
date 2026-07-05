@@ -111,10 +111,10 @@ fi
 
 ---
 
-## SAP BTP (Deprati)
+## SAP BTP
 
-- **Destinations**: `DepratiAPI`, `DepratiS4`, `DepratiMD`
-- **IAS tenant**: `deprati.accounts.ondemand.com`
+- **Destinations**: `${DEPRATI_BTP_DESTINATIONS}` (destinos internos definidos en variables de entorno)
+- **IAS tenant**: `${DEPRATI_IAS_TENANT}`
 - **API Gateway**: Cloud Foundry router con XSUAA
 
 ---
