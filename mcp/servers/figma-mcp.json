@@ -1,0 +1,11 @@
+{
+  "name": "figma-mcp",
+  "description": "Figma design tokens and assets access via figma-developer-mcp",
+  "command": "bash",
+  "args": [
+    "-c",
+    "\"$DEPRATI_BASE_PROJECT_PATH/scripts/figma-mcp.sh\""
+  ],
+  "env": {},
+  "disabled": false
+}

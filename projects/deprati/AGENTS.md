@@ -11,8 +11,8 @@ Este proyecto no tiene nada adentro. Todo está afuera, en dos rutas distintas:
 
 | Variable | Qué contiene | Ejemplo |
 |----------|-------------|---------|
-| `$DEPRATI_BASE_PROJECT_PATH` | **SDD**: specs, reglas, documentación, ADRs | `C:\Projects\deprati-base` |
-| `$DEPRATI_PROJECT_PATH` | **Código real**: `app/`, `srv/`, `db/`, tests | `C:\Projects\deprati-app` |
+| `$DEPRATI_BASE_PROJECT_PATH` | **SDD**: specs, reglas, documentación, ADRs | `$DEPRATI_BASE_PROJECT_PATH` |
+| `$DEPRATI_PROJECT_PATH` | **Código real**: `app/`, `srv/`, `db/` | `$DEPRATI_PROJECT_PATH` |
 
 ---
 
@@ -26,7 +26,7 @@ Este proyecto no tiene nada adentro. Todo está afuera, en dos rutas distintas:
 
 ### Paso 1.5: Sincronizar MCP servers externos
 ```powershell
-.\scripts\mcp\sync-external.ps1
+./scripts/mcp/sync.sh deprati
 ```
 Lee los MCP servers de `$DEPRATI_BASE_PROJECT_PATH\.opencode\mcp\servers\` y los enlaza localmente.
 
@@ -55,7 +55,6 @@ if (-not $code -or -not (Test-Path $code)) {
 | Leer/escribir ADRs | `$base/specs/` |
 | Leer reglas extra | `$base/rules/` |
 | Leer documentación | `$base/docs/` |
-| Correr tests | `$code` |
 | Git | `$code` |
 
 ### Paso 4: Al terminar
@@ -92,7 +91,6 @@ if (-not $code -or -not (Test-Path $code)) {
 
 ## Reglas de Calidad
 
-- **Tests obligatorios** en todo handler CAP y store Pinia
 - **TypeScript estricto**: sin `any`, sin `@ts-ignore`
 - **No console.log** en commits → usar `req.log` o `cds.log`
 - **No hardcodear** tenant IDs, destination names, ni URLs
@@ -144,5 +142,4 @@ R: En `$DEPRATI_BASE_PROJECT_PATH/specs/`.
 **Q: ¿Dónde va el código nuevo?**
 R: En `$DEPRATI_PROJECT_PATH`.
 
-**Q: ¿Dónde corro los tests?**
-R: `npm test` desde `$DEPRATI_PROJECT_PATH`.
+

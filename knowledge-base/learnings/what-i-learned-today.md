@@ -8,4 +8,4 @@ A running log of learnings, gotchas, and discoveries.
 - Learning: [what I learned]
 - Context: [why this matters, what prompted it]
 - Source: [link, book, conversation, experience]
-- Tags: #sap #vue #testing #performance
+- Tags: #sap #vue #performance

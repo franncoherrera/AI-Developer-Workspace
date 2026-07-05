@@ -67,7 +67,7 @@ ai-developer-workspace/
 │   ├── global/
 │   │   ├── mandatory.md        #   Reglas no-negociables (seguridad, calidad, comportamiento AI)
 │   │   ├── AGENTS.md           #   Reglas globales de comunicación, workflow y git hygiene
-│   │   └── partials/           #   Fragmentos reutilizables (code-standards, testing)
+│   │   └── partials/           #   Fragmentos reutilizables (code-standards)
 │   ├── accelerator-sap-vue/AGENTS.md # Reglas: Vue 3 + CAP + SAP BTP + Fiori
 │   └── _template/AGENTS.md     #   Template para añadir nuevas tecnologías
 │
@@ -77,7 +77,6 @@ ai-developer-workspace/
 │   │   ├── partial-implementation-plan.md
 │   │   └── partial-spec-review.md
 │   ├── code-review/            #   Prompts para PR descriptions
-│   ├── testing/                #   Prompts para unit tests
 │   └── accelerator-sap-vue/     #   Prompts específicos SAP + Vue
 │
 ├── knowledge-base/             # ★ CONOCIMIENTO PERSONAL (memoria del equipo)
@@ -105,6 +104,10 @@ ai-developer-workspace/
 │       └── .vscode-extensions.json
 │
 ├── scripts/                    # ★ AUTOMATIZACIONES
+│   ├── commands/               #   Scripts de sincronización de comandos
+│   │   └── sync-commands.sh    #     Sincroniza comandos /qubik-* desde $DEPRATI_BASE_PROJECT_PATH
+│   ├── mcp/                    #   Scripts de sincronización de MCP servers
+│   │   └── sync-external.ps1  #     Sincroniza MCP servers desde $DEPRATI_BASE_PROJECT_PATH
 │   ├── project/new-project.ps1 #   Scaffolding de nuevos proyectos desde templates
 │   ├── shared/setup-workspace.ps1 # Setup inicial del workspace
 │   └── utils/validate-rules.ps1#   Validador de integridad de reglas
@@ -299,7 +302,7 @@ Las reglas se mapean a `.cursorrules` o se configuran en el IDE. Workspace setti
 Estas reglas **siempre** aplican. Ningún agente o desarrollador puede evitarlas:
 
 - **Seguridad**: No loguear secretos, no committear credenciales, validar inputs, usar queries parametrizadas.
-- **Calidad**: Escribir tests por cada feature, ejecutar linter siempre, funciones pequeñas (< 20 líneas), código muerto se elimina (no se comenta).
+- **Calidad**: Ejecutar linter siempre, funciones pequeñas (< 20 líneas), código muerto se elimina (no se comenta).
 - **Comportamiento AI**: Preguntar antes de acciones destructivas, leer antes de editar, explicar comandos no triviales, respetar .gitignore, mantenerse en la tarea.
 
 ### Reglas Globales (`rules/global/AGENTS.md`)
@@ -308,7 +311,7 @@ Estas reglas **siempre** aplican. Ningún agente o desarrollador puede evitarlas
 - Incluir archivo:línea al referenciar código
 - Flujo: **Read → Plan → Execute → Verify**
 - Commits con formato `tipo(scope): descripción`
-- Tipos permitidos: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `perf`, `style`
+- Tipos permitidos: `feat`, `fix`, `refactor`, `docs`, `chore`, `perf`, `style`
 
 ### Reglas por Tecnología
 
@@ -325,10 +328,9 @@ Los prompts están organizados en `prompts/` y usan el prefijo `partial-` para i
 | Prompt | Propósito |
 |--------|-----------|
 | `global/partial-code-review.md` | Template para revisiones de código con categorías Critical/Warning/Suggestion |
-| `global/partial-implementation-plan.md` | Plan de implementación estructurado (archivos, cambios, dependencias, tests) |
-| `global/partial-spec-review.md` | Revisión de especificaciones (claridad, completitud, factibilidad, testabilidad) |
-| `testing/partial-unit-test.md` | Template para escribir tests unitarios (AAA pattern + edge cases) |
-| `code-review/partial-pr-description.md` | Template de descripción de PR (summary, changes, testing, breaking changes) |
+| `global/partial-implementation-plan.md` | Plan de implementación estructurado (archivos, cambios, dependencias) |
+| `global/partial-spec-review.md` | Revisión de especificaciones (claridad, completitud, factibilidad) |
+| `code-review/partial-pr-description.md` | Template de descripción de PR (summary, changes, breaking changes) |
 
 Para cargar un prompt parcial durante una tarea, el agente IA debe leer el contenido del archivo y aplicarlo al contexto actual.
 
@@ -430,7 +432,6 @@ Ejemplos:
   feat(auth): add login endpoint
   fix(cart): resolve NPE when cart is empty
   refactor(checkout): extract payment validation
-  test(order): add unit tests for OrderService
   docs(api): update OpenAPI spec
   chore(deps): upgrade @sap/cds to 8.0.0
   perf(query): optimize N+1 in OrderRepository
@@ -444,7 +445,6 @@ Ejemplos:
 | `feat` | Nueva funcionalidad |
 | `fix` | Corrección de bug |
 | `refactor` | Reestructuración de código sin cambio funcional |
-| `test` | Adición o modificación de tests |
 | `docs` | Documentación |
 | `chore` | Mantenimiento (build, dependencias, tooling) |
 | `perf` | Mejora de rendimiento |
@@ -519,6 +519,35 @@ mcp/
 
 ---
 
+## Integración con Comandos Personalizados (Slash Commands)
+
+El workspace soporta la sincronización de **comandos slash** (`/comando`) desde proyectos externos, siguiendo el mismo patrón que los MCP servers.
+
+### Sincronización desde `$DEPRATI_BASE_PROJECT_PATH`
+
+```bash
+./scripts/commands/sync-commands.sh
+```
+
+Este script:
+1. Lee `$DEPRATI_BASE_PROJECT_PATH` del `.env`
+2. Escanea `$DEPRATI_BASE_PROJECT_PATH/.opencode/commands/` buscando archivos `.md` en todos los subdirectorios
+3. Crea symlinks en `.opencode/commands/` para que OpenCode los descubra automáticamente
+
+Esto permite usar comandos como `/qubik-setup`, `/qubik-discovery`, `/qubik-spec`, etc. definidos en proyectos externos, sin importar el nombre de la carpeta o el prefijo. Si mañana cambian a `/cortex-*`, el script sigue funcionando sin modificaciones.
+
+### ¿Cómo se vinculan los comandos?
+
+```
+$DEPRATI_BASE_PROJECT_PATH/.opencode/commands/<cualquier-carpeta>/*.md
+  └── symlinks → .opencode/commands/<nombre>.md
+                 (OpenCode los carga automáticamente)
+```
+
+Los symlinks están en `.opencode/.gitignore` para no committear rutas de máquina local. Si se pierden, se regeneran ejecutando el script nuevamente.
+
+---
+
 ## Integración con Clean Architecture
 
 El workspace incluye una guía de Clean Architecture adaptada a Accelerator SAP + Vue.js.
@@ -574,7 +603,6 @@ Scenario: <descripción>
 - API changes:
 
 ## Definition of Done
-- [ ] Code complete with tests
 - [ ] All acceptance criteria pass
 - [ ] Linting passes
 - [ ] PR reviewed and approved
@@ -640,7 +668,7 @@ projects/<project>/
 ### Flujo de Sprint
 
 1. **Sprint Planning**: PO escribe specs → AI refina AC → tareas se desglosan
-2. **Durante el Sprint**: AI carga contexto del sprint → trabaja tareas en orden → logra progreso → corre tests
+2. **Durante el Sprint**: AI carga contexto del sprint → trabaja tareas en orden → logra progreso
 3. **Review/Retro**: AI resume completado → equipo revisa → retro capturada → mejoras aplicadas
 
 ---
@@ -649,6 +677,8 @@ projects/<project>/
 
 | Script | Propósito | Uso |
 |--------|-----------|-----|
+| `scripts/commands/sync-commands.sh` | Sincroniza comandos personalizados (ej: `/qubik-*`) desde `$DEPRATI_BASE_PROJECT_PATH` | `./scripts/commands/sync-commands.sh` |
+| `scripts/mcp/sync-external.ps1` | Sincroniza MCP servers desde `$DEPRATI_BASE_PROJECT_PATH` | `.\scripts\mcp\sync-external.ps1` |
 | `scripts/project/new-project.ps1` | Scaffolding de nuevos proyectos desde template | `.\scripts\project\new-project.ps1 -Name "x" -Type "accelerator-sap-vue"` |
 | `scripts/shared/setup-workspace.ps1` | Setup inicial del workspace (dirs, hooks, prereqs) | `.\scripts\shared\setup-workspace.ps1` |
 | `scripts/utils/validate-rules.ps1` | Valida que todas las reglas cumplan el formato requerido | `.\scripts\utils\validate-rules.ps1` |
@@ -795,10 +825,10 @@ projects/
 
 ```powershell
 # Symlink a proyectos que viven fuera del workspace
-New-Item -ItemType SymbolicLink -Path projects/external-api -Target C:\Projects\external-api
+New-Item -ItemType SymbolicLink -Path projects/external-api -Target "$env:EXTERNAL_PROJECT_PATH"
 
 # O variable de entorno
-$env:OPENCODE_WORKSPACE = "D:\Programación\AI-Developer-Workspace"
+$env:OPENCODE_WORKSPACE = "$env:WORKSPACE_PATH"
 ```
 
 ### Claves de Escalabilidad
@@ -889,10 +919,10 @@ docs(readme): update MCP integration section
 |----------|-----------|---------|
 | **Carpetas** | `kebab-case` | `knowledge-base` |
 | **Documentos** | `PascalCase.md` | `ARCHITECTURE.md`, `ROADMAP.md`, `ADR-001.md` |
-| **Prompts parciales** | `partial-*.md` | `partial-code-review.md`, `partial-unit-test.md` |
+| **Prompts parciales** | `partial-*.md` | `partial-code-review.md` |
 | **Keys de tecnología** | `kebab-case` | `accelerator-sap-vue` |
 | **Nombres de proyecto** | `kebab-case` | `my-app`, `frontend-app` |
-| **Nombres de script** | `kebab-case.ps1` | `new-project.ps1`, `setup-workspace.ps1` |
+| **Nombres de script** | `kebab-case.sh` | `sync.sh`, `new-project.sh` |
 | **Archivos de reglas** | `AGENTS.md` | Siempre `AGENTS.md` (para descubrimiento automático) |
 | **READMEs** | `README.md` | Solo para documentación de usuario |
 | **Configuraciones** | `.prettierrc`, `.eslintrc.json` | Convención de la herramienta |
@@ -920,11 +950,11 @@ docs(readme): update MCP integration section
 | **Prettier** | Formateo de código JS/TS/HTML/CSS |
 | **Renovate** | Actualización automática de dependencias |
 | **Snyk / Trivy** | Escaneo de seguridad |
-| **Testcontainers** | Contenedores para tests de integración |
+
 
 ### Accelerator SAP + Vue.js
 
-Vue 3 + Composition API, SAP CAP (cds), Pinia, Fundamental Library / UI5, SAP Cloud SDK, Vitest, @sap/cds-test.
+Vue 3 + Composition API, SAP CAP (cds), Pinia, Fundamental Library / UI5, SAP Cloud SDK.
 
 
 
@@ -939,8 +969,7 @@ El workspace incluye un workflow CI reutilizable en `workflows/github/ci.yml`:
 ```yaml
 jobs:
   lint:    # Ejecutar linter
-  test:    # Ejecutar tests (depende de lint)
-  build:   # Compilar/build (depende de test)
+  build:   # Compilar/build
 ```
 
 Cada proyecto debe copiar este workflow y adaptarlo si es necesario.

@@ -11,12 +11,6 @@
 - Code style specifics for this technology.
 - Framework-specific patterns.
 
-## Testing
-
-- Preferred testing framework(s).
-- Test structure and naming.
-- Coverage requirements.
-
 ## Build & Tooling
 
 - Build system (Maven, Gradle, esbuild, webpack, etc.)

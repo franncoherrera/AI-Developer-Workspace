@@ -11,7 +11,6 @@
 | **Pinia** | Una store por feature. Actions asíncronas con `await`. Nunca mutar estado fuera de actions. |
 | **XSUAA** | No hardcodear tokens. Usar `@sap/xssec` o `req.user` en CAP. |
 | **SAP Fiori** | Seguir Fiori Design Guidelines. Usar Fundamental Library o UI5 Web Components. |
-| **Tests** | Unit: Vitest (frontend). Integration: `@sap/cds-test` (backend). Mocks con `axios-mock-adapter`. |
 | **Errores** | CAP: `req.reject(code, message)`. Frontend: try/catch + notificación Fiori. |
 | **Async** | Siempre `await`. Nunca `.then()`. Nunca callbacks en handlers. |
 
@@ -24,14 +23,11 @@
 - **API**: OData v4 (expuesto por CAP server)
 - **UI/UX**: SAP Fiori Design Guidelines + Fundamental Library Styles
 - **Deploy**: SAP BTP Cloud Foundry o Kyma (Kubernetes)
-- **Testing**: Vitest (frontend) + Jest / supertest (CAP backend)
-
 ## Conventions
 
 - Componentes Vue: `PascalCase.vue` con `<script setup lang="ts">`
 - CDS models: `snake_case.cds` (convención SAP)
 - Servicios CAP: `camelCase` en JavaScript/TypeScript
-- Archivos de test: `*.test.ts` junto al archivo que testea
 - State management: Pinia (stores modulares)
 - Llamadas a SAP: usar `@sap-cloud-sdk/*` para APIs REST/OData
 - Manejo de errores: interceptors en Axios para SAP BTP error codes
@@ -57,17 +53,7 @@
 | `fundamental-vue` / `@ui5/webcomponents` | Fiori UI components |
 | `@vitejs/plugin-vue` | Vite build |
 | `axios` | HTTP client (con interceptors SAP) |
-| `vitest` | Unit testing |
-| `@sap/cds-test` | CAP integration testing |
 | `@ui5/cli` | UI5 toolchain utilities |
-
-## Testing
-
-- **Unit (frontend)**: Vitest + Vue Test Utils + Pinia testing
-- **Integration (CAP)**: `@sap/cds-test` para probar handlers OData
-- **E2E**: Playwright o Cypress con simulación de login XSUAA
-- Mocks: `axios-mock-adapter` para llamadas a servicios SAP externos
-- Test data: fixtures JSON en `test/fixtures/`
 
 ## Project Structure
 
@@ -82,21 +68,16 @@ app/                     → Vue.js frontend
 │   ├── stores/          → Pinia stores
 │   └── utils/           → Helpers, formatters, SAP utils
 ├── public/
-├── tests/
 └── vite.config.ts
 
 srv/                     → CAP backend services
 ├── <feature>/
 │   ├── <feature>.js     → Service handlers
-│   └── <feature>.test.js
 └── server.js            → CAP server entry
 
 db/                      → CDS data models
 ├── schema.cds           → Entidades y relaciones
 └── data/                → Seed data (.csv)
-
-test/                    → CAP integration tests
-└── integration/
 ```
 
 ## SAP BTP Deployment

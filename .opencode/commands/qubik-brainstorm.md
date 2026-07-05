@@ -1,0 +1,1 @@
+/home/franco/Qubik/deprati_base/.opencode/commands/qubik-sdd/qubik-brainstorm.md

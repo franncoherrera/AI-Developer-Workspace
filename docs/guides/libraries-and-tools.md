@@ -26,5 +26,4 @@
 | **XSUAA / IAS** | Authentication |
 | **Pinia** | State management |
 | **Fundamental Library / UI5** | Fiori UI components |
-| **Vitest** | Unit testing |
-| **@sap/cds-test** | CAP integration testing |
+

@@ -38,8 +38,8 @@
 - [ ] GitHub MCP server (issues, PRs, actions)
 - [ ] Custom MCP tools: project search, rule validation
 - [ ] OpenCode agent definitions for common tasks
-- [ ] Skills for code review, testing, refactoring
-- [ ] Multi-agent orchestration (e.g., review agent → test agent → build agent)
+- [ ] Skills for code review, refactoring
+- [ ] Multi-agent orchestration
 
 ## Phase 5: Scaling & Governance
 

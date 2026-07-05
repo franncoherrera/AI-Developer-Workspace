@@ -38,7 +38,7 @@ projects/<project>/
 1. AI agent loads `sprints/current/` context
 2. Works through tasks in priority order
 3. Logs progress in `progress.md`
-4. Runs tests before marking tasks complete
+4. Verifies completion criteria before marking tasks done
 
 ### Sprint Review / Retro
 1. AI agent summarizes completed work from `progress.md`

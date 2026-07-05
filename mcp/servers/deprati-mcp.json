@@ -1,0 +1,13 @@
+{
+  "name": "deprati-mcp",
+  "description": "MCP server for Deprati project documentation and code knowledge (RAG sobre features, endpoints, specs)",
+  "command": "bash",
+  "args": [
+    "-c",
+    "node \"$DEPRATI_BASE_PROJECT_PATH/modules/mcp/dist/index.js\""
+  ],
+  "env": {
+    "DEPRATI_MCP_SUMMARIZE": "false"
+  },
+  "disabled": false
+}

@@ -23,7 +23,6 @@ git bisect start                                # Find bug commit
 - `feat:` — new feature
 - `fix:` — bug fix
 - `refactor:` — code restructuring
-- `test:` — adding/updating tests
 - `docs:` — documentation
 - `chore:` — build, deps, tooling
 - `perf:` — performance improvement

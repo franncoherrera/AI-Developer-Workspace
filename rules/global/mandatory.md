@@ -11,8 +11,7 @@ These rules apply to EVERY task. Violations must be flagged immediately.
 
 ## Code Quality
 
-1. **Write tests** — every new feature includes tests (unit + integration where applicable).
-2. **Run linting** — always run linter before completing a task.
+1. **Run linting** — always run linter before completing a task.
 3. **Follow language idioms** — don't write Java like C# or TypeScript like Java.
 4. **Keep functions small** — one responsibility per function. Extract when > 20 lines.
 5. **No commented-out code** — delete dead code, don't comment it out.

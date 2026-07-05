@@ -13,13 +13,12 @@ Apply these rules unless overridden by technology or project-specific rules.
 
 - **Read → Plan → Execute → Verify** — always follow this sequence.
 - Before writing code, read existing files to understand conventions.
-- After writing code, run linter and tests.
-- If tests fail, fix the issue — do not move on.
+- After writing code, run linter.
 
 ## Git Hygiene
 
 - Commit messages: `type(scope): description` (e.g., `feat(auth): add login endpoint`)
-- Allowed types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `perf`, `style`
+- Allowed types: `feat`, `fix`, `refactor`, `docs`, `chore`, `perf`, `style`
 - Keep commits atomic: one logical change per commit.
 - Never amend pushed commits.
 - Never force push without explicit permission.
