@@ -4,8 +4,16 @@
 
 set -euo pipefail
 
-PROJECT="${1:?Usage: $0 <project>}"
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+
+# Source .env if present (so the user doesn't need to export vars manually)
+if [ -f "$WORKSPACE_ROOT/.env" ]; then
+  set -a
+  source "$WORKSPACE_ROOT/.env"
+  set +a
+fi
+
+PROJECT="${1:?Usage: $0 <project>}"
 LOCAL_DIR="$WORKSPACE_ROOT/mcp/servers"
 SETTINGS="$WORKSPACE_ROOT/projects/$PROJECT/.opencode/settings.json"
 
