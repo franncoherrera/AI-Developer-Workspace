@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
-# Initial setup for the AI Developer Workspace.
+# scripts/shared/setup-workspace.sh
+# Description: Setup inicial del workspace. Verifica prerequisitos (git,
+#   docker, jq, node) y crea los directorios base necesarios.
+# Usage: ./scripts/shared/setup-workspace.sh
+# Depends: git, docker, jq, node (opcional — warns si faltan)
+# Env: (ninguna)
+# Failures:
+#   - Ningún error fatal; los prerequisitos faltantes son warnings
 set -euo pipefail
 
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -36,6 +43,16 @@ for dir in "${dirs[@]}"; do
     echo "  [CREATE] $path"
   fi
 done
+
+# Install pre-commit hook
+HOOK_SRC="$WORKSPACE_ROOT/scripts/hooks/pre-commit.sh"
+HOOK_DST="$WORKSPACE_ROOT/.git/hooks/pre-commit"
+if [ -f "$HOOK_SRC" ] && [ -d "$WORKSPACE_ROOT/.git/hooks" ]; then
+  if [ ! -f "$HOOK_DST" ] && [ ! -L "$HOOK_DST" ]; then
+    ln -s "$HOOK_SRC" "$HOOK_DST"
+    echo "  [INSTALL] pre-commit hook (.git/hooks/pre-commit → scripts/hooks/pre-commit.sh)"
+  fi
+fi
 
 echo "Setup complete!"
 echo "Workspace: $WORKSPACE_ROOT"

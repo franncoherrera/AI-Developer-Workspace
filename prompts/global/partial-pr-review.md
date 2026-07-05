@@ -10,4 +10,5 @@ You are reviewing a **Pull Request**. The active project is at the `workdir` con
    - **Correctness**: Edge cases, errors, logical issues
    - **Dependencies**: Does it need other changes to work?
    - **Safety**: Would merging this break anything?
-5. **Recommendation**: Approve, request changes, or needs more context
+5. **Visual test**: Si el PR cambia la UI, levantá el proyecto (`npm run dev`, `cds watch`, etc.) y probalo con las herramientas `browser_*` — navegá a la URL, verificá que los cambios se vean bien, interactuá con la interfaz, tomá screenshots
+6. **Recommendation**: Approve, request changes, or needs more context

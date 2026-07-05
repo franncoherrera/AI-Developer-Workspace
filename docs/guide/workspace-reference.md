@@ -93,33 +93,37 @@ ai-developer-workspace/
 │       └── .prettierrc
 │
 ├── scripts/                    # ★ AUTOMATIZACIONES
-│   ├── commands/               #   Scripts de sincronización de comandos
-│   │   └── sync-commands.sh    #     Sincroniza comandos /qubik-* desde $DEPRATI_BASE_PROJECT_PATH
-│   ├── mcp/                    #   Scripts de sincronización de MCP servers
-│   │   └── sync.sh             #     Sincroniza MCP servers desde proyecto externo
-│   ├── project/new-project.sh  #   Scaffolding de nuevos proyectos desde templates
+│   ├── commands/sync-commands.sh #   Sincroniza comandos /qubik-*
+│   ├── docs/                   #   Generadores de documentación
+│   │   ├── generate.sh         #     Generador maestro (AUTO markers)
+│   │   └── generate-scripts-ref.sh # Scripts reference auto-generator
+│   ├── hooks/pre-commit.sh     #   Pre-commit hook (auto-docs)
+│   ├── knowledge/sync.sh       #   Sincroniza symlinks de knowledge-base
+│   ├── mcp/sync.sh             #   Sincroniza MCP servers externos
+│   ├── project/new-project.sh  #   Scaffolding de nuevos proyectos
 │   ├── shared/setup-workspace.sh # Setup inicial del workspace
-│   └── utils/validate-rules.sh #   Validador de integridad de reglas
+│   ├── utils/                  #   Utilidades
+│   │   ├── register-technology.sh
+│   │   └── validate-rules.sh
+│   └── doctor.sh               #   Diagnóstico completo del workspace
 │
 ├── mcp/                        # ★ MCP SERVERS (Model Context Protocol)
 │   ├── README.md               #   Documentación de MCP
-│   ├── servers/                #   Definiciones de servidores MCP
-│   │   ├── filesystem.json     #   Servidor de sistema de archivos
-│   │   ├── deprati-mcp.json    #   MCP del proyecto Deprati (RAG)
-│   │   └── figma-mcp.json      #   MCP de Figma (design tokens)
-│   └── tools/                  #   Definiciones de herramientas personalizadas
+│   └── servers/                #   Definiciones de servidores MCP
 │
 ├── docs/                       # ★ DOCUMENTACIÓN TÉCNICA
 │   ├── architecture/           #   Guías de arquitectura (Clean Architecture)
 │   │   └── clean-architecture-guide.md
-│   ├── guides/                 #   How-tos y guías de uso
+│   ├── guide/                  #   Guía principal del workspace
 │   │   ├── workspace-reference.md #   Este archivo
+│   │   └── scripts-reference.md   #   Referencia de scripts (auto-generado)
+│   ├── guides/                 #   How-tos adicionales
 │   │   ├── how-to-add-technology.md
 │   │   ├── libraries-and-tools.md
 │   │   └── scrum-agile-integration.md
-│   ├── references/             #   Registro de tecnologías y referencias
-│   │   └── technologies.md
-│   └── decisions/              #   Decisiones arquitectónicas adicionales
+│   └── references/             #   Registro de tecnologías y referencias
+│       ├── technologies.json
+│       └── technologies.md
 │
 ├── AGENTS.md                   # Entry point para agentes IA (punto de entrada)
 ├── README.md                   # Guía de uso diario
@@ -183,7 +187,7 @@ Cuando un agente IA comienza una tarea, resuelve el contexto en este orden:
 Global Rules (siempre cargadas)
   └── Project AGENTS.md (declara tecnología → dispacha a tech rules)
        └── Technology Rules (cargadas según lo que declaró el proyecto)
-            └── Project Base Rules (si existen, ej: deprati_base)
+            └── Project Base Rules (si existen, desde \$<NAME>_BASE_PROJECT_PATH)
                  └── Project Rules (específicas del proyecto)
                       └── Task Context (instrucciones de la tarea)
 ```
@@ -194,9 +198,11 @@ Las capas superiores pueden **refinar pero no anular** las reglas obligatorias d
 
 ## Tecnologías Soportadas
 
+<!-- AUTO:technologies -->
 | Tecnología | Versión | Framework/Build | Estado |
 |-----------|---------|-----------------|--------|
-| **Accelerator SAP + Vue.js** | — | Vue 3 + CAP + SAP BTP, Fiori Design | ✅ Active |
+| **SAP CAP + Vue 3** | — | Vue 3 + CAP + SAP BTP, Fiori Design | ✅ Active |
+<!-- /AUTO -->
 
 ---
 
@@ -259,10 +265,12 @@ Cada tecnología tiene su propio `rules/<tech>/AGENTS.md` con:
 
 Los prompts están organizados en `prompts/` y usan el prefijo `partial-` para indicar que son fragmentos componibles.
 
+<!-- AUTO:prompts -->
 | Prompt | Propósito |
 |--------|-----------|
-| `global/partial-stash-review.md` | Revisión de cambios staged pendientes de commit |
-| `global/partial-pr-review.md` | Revisión de Pull Requests |
+| `global/partial-pr-review.md` | Pull Request Review Prompt |
+| `global/partial-stash-review.md` | Staged Changes Review Prompt |
+<!-- /AUTO -->
 
 Para cargar un prompt parcial durante una tarea, el agente IA debe leer el contenido del archivo y aplicarlo al contexto actual.
 
@@ -388,13 +396,16 @@ El workspace soporta el **Model Context Protocol (MCP)** para que los agentes IA
 
 ### Estructura (`mcp/`)
 
+<!-- AUTO:mcp -->
 ```
 mcp/
 ├── README.md                 # Documentación MCP
 ├── servers/                  # Definiciones de servidores MCP
-│   ├── filesystem.json       # Servidor de archivos
-│   ├── deprati-mcp.json      # MCP del proyecto Deprati (RAG)
-│   └── figma-mcp.json        # MCP de Figma (design tokens)
+│   ├── browser.json
+│   ├── deprati-mcp.json
+│   ├── figma-mcp.json
+│   ├── filesystem.json
+│   ├── obsidian.json
 └── tools/                    # Herramientas personalizadas
 ```
 
@@ -402,9 +413,12 @@ mcp/
 
 | Servidor | Descripción |
 |----------|-------------|
-| `filesystem` | Acceso seguro al sistema de archivos del workspace |
-| `deprati-mcp` | RAG sobre documentación, features, endpoints y specs del proyecto Deprati |
-| `figma-mcp` | Acceso a design tokens y assets de Figma |
+| `browser` | Browser automation for testing web apps — controla Chrome/Edge con IA |
+| `deprati-mcp` | MCP server for Deprati project documentation and code knowledge (RAG sobre features, endpoints, specs) |
+| `figma-mcp` | Figma design tokens and assets access via figma-developer-mcp |
+| `filesystem` | Secure file system access for AI agents — limitado al workspace root |
+| `obsidian` | Acceso al vault de Obsidian (knowledge-base) — leer, buscar, crear y editar notas markdown |
+<!-- /AUTO -->
 
 Los paths de los servidores usan variables de entorno (`$DEPRATI_BASE_PROJECT_PATH`) en lugar de rutas absolutas.
 
@@ -451,8 +465,10 @@ Este script:
 
 | Comando | Descripción |
 |---------|-------------|
-| `/f-review-changes <project>` | Revisa cambios staged (git add) pendientes de commit |
-| `/f-review-pr <project> <pr>` | Revisa un Pull Request usando `gh` |
+| `/f-agent ${projectName}` | Activa el contexto de un proyecto (resuelve rutas reales desde env vars) |
+| `/f-review-changes ${projectName}` | Revisa cambios staged pendientes de commit |
+| `/f-review-pr ${projectName} <pr-id>` | Revisa un Pull Request usando `gh` |
+| `/qubik-*` | Comandos Qubik SDD Framework (sincronizados desde proyecto externo) |
 
 ### ¿Cómo se vinculan los comandos?
 
@@ -540,13 +556,21 @@ projects/<project>/
 
 ## Automatizaciones y Scripts
 
+<!-- AUTO:scripts -->
 | Script | Propósito | Uso |
 |--------|-----------|-----|
-| `scripts/commands/sync-commands.sh` | Sincroniza comandos `/qubik-*` desde proyecto externo | `./scripts/commands/sync-commands.sh` |
-| `scripts/mcp/sync.sh` | Sincroniza MCP servers desde proyecto externo | `./scripts/mcp/sync.sh deprati` |
-| `scripts/project/new-project.sh` | Scaffolding de nuevos proyectos desde template | `./scripts/project/new-project.sh mi-app accelerator-sap-vue` |
-| `scripts/shared/setup-workspace.sh` | Setup inicial del workspace | `./scripts/shared/setup-workspace.sh` |
-| `scripts/utils/validate-rules.sh` | Valida integridad de reglas | `./scripts/utils/validate-rules.sh` |
+| `scripts/commands/sync-commands.sh` | Sincroniza comandos slash (/qubik-*) desde un proyecto externo hacia .opencode/commands/. Lee DEPRATI_BASE_PROJECT_PATH del .env. | `./scripts/commands/sync-commands.sh` |
+| `scripts/docs/generate-scripts-ref.sh` | Genera automáticamente docs/guide/scripts-reference.md a partir de los doc headers estandarizados en cada script .sh. Se ejecuta como pre-commit hook cuando scripts/ cambia, o manualmente cuando se desee. | `./scripts/docs/generate-scripts-ref.sh` |
+| `scripts/docs/generate.sh` | Generador maestro de documentación. Escanea el estado real del workspace y actualiza las secciones marcadas con <!-- AUTO: --> en docs/guide/workspace-reference.md. También regenera scripts-reference.md. | `./scripts/docs/generate.sh` |
+| `scripts/doctor.sh` | Diagnóstico completo del workspace. Verifica variables de entorno, directorios externos, MCP servers, estructura de reglas, y dependencias. | `./scripts/doctor.sh [project]` |
+| `scripts/hooks/pre-commit.sh` | Pre-commit hook que regenera automáticamente docs/guide/scripts-reference.md cuando hay cambios en scripts/. Instalado por setup-workspace.sh como symlink en .git/hooks/pre-commit. | `(se ejecuta automáticamente en git commit)` |
+| `scripts/knowledge/sync.sh` | Sincroniza symlinks en knowledge-base/_proyectos/ con las variables de entorno *_BASE_PROJECT_PATH. Crea enlaces a la documentación externa de cada proyecto (specs, ADRs, docs, rules). | `./scripts/knowledge/sync.sh` |
+| `scripts/mcp/sync.sh` | Sincroniza definiciones de MCP servers desde un proyecto externo hacia mcp/servers/. Soporta dos formatos:   1) Archivos .json individuales en .opencode/mcp/servers/ (symlink)   2) .mcp.json en la raíz del proyecto externo (conversión automática a      formato OpenCode, con prefijo ext.) | `./scripts/mcp/sync.sh <project>` |
+| `scripts/project/new-project.sh` | Crea un nuevo proyecto a partir de un template registrado en technologies.json. Copia la estructura del template, genera AGENTS.md, y actualiza PROJECTS_INDEX.md. | `./scripts/project/new-project.sh <name> <type> [path]` |
+| `scripts/shared/setup-workspace.sh` | Setup inicial del workspace. Verifica prerequisitos (git, docker, jq, node) y crea los directorios base necesarios. | `./scripts/shared/setup-workspace.sh` |
+| `scripts/utils/register-technology.sh` | Registra una nueva tecnología en el workspace. Crea las carpetas en rules/, prompts/, config/, templates/ y añade la entrada en technologies.json. | `./scripts/utils/register-technology.sh <key> <name>` |
+| `scripts/utils/validate-rules.sh` | Valida la integridad del workspace: verifica que toda carpeta rules/ tenga su AGENTS.md, que el registro de tecnologías coincida con la estructura real, y detecta carpetas huérfanas. | `./scripts/utils/validate-rules.sh` |
+<!-- /AUTO -->
 
 ### new-project.sh
 

@@ -8,9 +8,7 @@
       "status": "active",
       "has": {
         "rules": true,
-        "prompts": true,
-        "config": true,
-        "template": true
+        "config": true
       }
     }
   ]

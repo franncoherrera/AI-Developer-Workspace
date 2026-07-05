@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
-# Validates workspace integrity: rules, registry, and folder structure.
+# scripts/utils/validate-rules.sh
+# Description: Valida la integridad del workspace: verifica que toda carpeta
+#   rules/ tenga su AGENTS.md, que el registro de tecnologías coincida con
+#   la estructura real, y detecta carpetas huérfanas.
+# Usage: ./scripts/utils/validate-rules.sh
+# Depends: jq
+# Env: (ninguna)
+# Failures:
+#   - technologies.json no encontrado → exit 1
+#   - Missing rules, prompts, config, o templates → exit 1 con lista
+#   - Orphan folders → exit 1 con lista
 set -euo pipefail
 
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -45,6 +55,7 @@ KNOWN_KEYS=$(jq -r '.technologies[].key' "$REGISTRY" | tr '\n' '|')
 for base in rules prompts config templates; do
   [ ! -d "$WORKSPACE_ROOT/$base" ] && continue
   for dir in "$WORKSPACE_ROOT/$base"/*/; do
+    [ ! -d "$dir" ] && continue  # skip literal glob when dir is empty
     name=$(basename "$dir")
     is_non_tech=false
     for nt in "${NON_TECH[@]}"; do [ "$nt" = "$name" ] && is_non_tech=true && break; done

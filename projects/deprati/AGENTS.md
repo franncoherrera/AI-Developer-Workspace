@@ -25,26 +25,27 @@ Este proyecto no tiene nada adentro. Todo está afuera, en dos rutas distintas:
 4. `rules/accelerator-sap-vue/AGENTS.md`
 
 ### Paso 1.5: Sincronizar MCP servers externos
-```powershell
+```bash
 ./scripts/mcp/sync.sh deprati
 ```
-Lee los MCP servers de `$DEPRATI_BASE_PROJECT_PATH\.opencode\mcp\servers\` y los enlaza localmente.
+Lee los MCP servers de `$DEPRATI_BASE_PROJECT_PATH/.opencode/mcp/servers/` y los enlaza localmente.
 
 ### Paso 2: Validar y resolver rutas
-```powershell
-$code = $env:DEPRATI_PROJECT_PATH
-$base = $env:DEPRATI_BASE_PROJECT_PATH
+```bash
+code="${DEPRATI_PROJECT_PATH:-}"
+base="${DEPRATI_BASE_PROJECT_PATH:-}"
 
 # Primero validar que BASE existe siempre
-if (-not $base -or -not (Test-Path $base)) {
-  throw "Se necesita DEPRATI_BASE_PROJECT_PATH apuntando a una carpeta existente"
-}
+if [ -z "$base" ] || [ ! -d "$base" ]; then
+  echo "Se necesita DEPRATI_BASE_PROJECT_PATH apuntando a una carpeta existente" >&2
+  exit 1
+fi
 
 # Si CODE no existe, usar BASE como fallback para todo
-if (-not $code -or -not (Test-Path $code)) {
-  Write-Warning "DEPRATI_PROJECT_PATH no disponible. Usando DEPRATI_BASE_PROJECT_PATH para todo."
-  $code = $base
-}
+if [ -z "$code" ] || [ ! -d "$code" ]; then
+  echo "DEPRATI_PROJECT_PATH no disponible. Usando DEPRATI_BASE_PROJECT_PATH para todo."
+  code="$base"
+fi
 ```
 
 ### Paso 3: Trabajar
@@ -120,13 +121,13 @@ if (-not $code -or -not (Test-Path $code)) {
 
 ## Atajos
 
-```powershell
-$code = $env:DEPRATI_PROJECT_PATH
-$base = $env:DEPRATI_BASE_PROJECT_PATH
+```bash
+code="${DEPRATI_PROJECT_PATH}"
+base="${DEPRATI_BASE_PROJECT_PATH}"
 
-ls $code/app/src/features/   # Features frontend
-ls $code/srv/                # Servicios CAP
-ls $base/specs/              # Especificaciones SDD
+ls "$code/app/src/features/"   # Features frontend
+ls "$code/srv/"                # Servicios CAP
+ls "$base/specs/"              # Especificaciones SDD
 ```
 
 ---

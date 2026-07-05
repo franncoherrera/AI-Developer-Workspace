@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
-# Registers a new technology in the workspace and creates its folder structure.
+# scripts/utils/register-technology.sh
+# Description: Registra una nueva tecnología en el workspace. Crea las carpetas
+#   en rules/, prompts/, config/, templates/ y añade la entrada en
+#   technologies.json.
 # Usage: ./scripts/utils/register-technology.sh <key> <name>
+# Depends: jq
+# Env: (ninguna)
+# Failures:
+#   - Sin argumentos → exit 1 con usage
+#   - Tecnología ya registrada → exit 1
+#   - technologies.json no encontrado → exit 1
 
 set -euo pipefail
 
@@ -39,9 +48,9 @@ jq --arg key "$KEY" --arg name "$NAME" \
     "status": "planned",
     "has": {
       "rules": true,
-      "prompts": false,
-      "config": false,
-      "template": false
+      "prompts": true,
+      "config": true,
+      "template": true
     }
   }]' "$REGISTRY" > "${REGISTRY}.tmp" && mv "${REGISTRY}.tmp" "$REGISTRY"
 

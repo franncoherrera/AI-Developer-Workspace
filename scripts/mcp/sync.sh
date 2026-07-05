@@ -1,12 +1,24 @@
 #!/usr/bin/env bash
-# Syncs MCP servers from a project's external path into local mcp/servers/
+# scripts/mcp/sync.sh
+# Description: Sincroniza definiciones de MCP servers desde un proyecto externo
+#   hacia mcp/servers/. Soporta dos formatos:
+#     1) Archivos .json individuales en .opencode/mcp/servers/ (symlink)
+#     2) .mcp.json en la raíz del proyecto externo (conversión automática a
+#        formato OpenCode, con prefijo ext.)
 # Usage: ./scripts/mcp/sync.sh <project>
+#   project — nombre del proyecto en projects/
+# Depends: jq
+# Env: DEPRATI_BASE_PROJECT_PATH (o el env_var.base definido en settings.json)
+# Failures:
+#   - settings.json no encontrado → exit 1
+#   - env_var.base no definido → exit 0 (no es error, falta config)
+#   - Variable de entorno no seteada → exit 0 (setup incompleto)
+#   - Sin servers en origen → exit 0
 
 set -euo pipefail
 
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 
-# Source .env if present (so the user doesn't need to export vars manually)
 if [ -f "$WORKSPACE_ROOT/.env" ]; then
   set -a
   source "$WORKSPACE_ROOT/.env"
@@ -18,40 +30,46 @@ LOCAL_DIR="$WORKSPACE_ROOT/mcp/servers"
 SETTINGS="$WORKSPACE_ROOT/projects/$PROJECT/.opencode/settings.json"
 
 if [ ! -f "$SETTINGS" ]; then
-  echo "Project settings not found: $SETTINGS"
+  echo "[sync] Project settings not found: $SETTINGS"
   exit 1
 fi
 
-# Read env_var.base from settings.json
 ENV_VAR_BASE=$(jq -r '.env_var.base // empty' "$SETTINGS")
 if [ -z "$ENV_VAR_BASE" ]; then
-  echo "No env_var.base defined for project '$PROJECT'. Nothing to sync."
+  echo "[sync] No env_var.base defined for project '$PROJECT'. Nothing to sync."
   exit 0
 fi
 
 BASE_PATH="${!ENV_VAR_BASE:-}"
 if [ -z "$BASE_PATH" ]; then
-  echo "Environment variable $ENV_VAR_BASE is not set. Nothing to sync."
-  exit 0
-fi
-
-EXTERNAL_DIR="$BASE_PATH/.opencode/mcp/servers"
-if [ ! -d "$EXTERNAL_DIR" ]; then
-  echo "No MCP servers found at $EXTERNAL_DIR"
+  echo "[sync] Environment variable $ENV_VAR_BASE is not set. Nothing to sync."
   exit 0
 fi
 
 mkdir -p "$LOCAL_DIR"
 
-# Remove stale ext.*.json symlinks
-find "$LOCAL_DIR" -maxdepth 1 -name 'ext.*.json' -type l -delete 2>/dev/null || true
+SYNCED=0
+EXTERNAL_DIR="$BASE_PATH/.opencode/mcp/servers"
+MCP_JSON="$BASE_PATH/.mcp.json"
 
-count=0
-for file in "$EXTERNAL_DIR"/*.json; do
-  [ -f "$file" ] || continue
-  name="ext.$(basename "$file")"
-  ln -sf "$file" "$LOCAL_DIR/$name"
-  count=$((count + 1))
-done
+# Modo 1: archivos individuales en .opencode/mcp/servers/
+if [ -d "$EXTERNAL_DIR" ]; then
+  find "$LOCAL_DIR" -maxdepth 1 -name 'ext.*.json' -type l -delete 2>/dev/null || true
+  for file in "$EXTERNAL_DIR"/*.json; do
+    [ -f "$file" ] || continue
+    name="ext.$(basename "$file")"
+    ln -sf "$file" "$LOCAL_DIR/$name"
+    SYNCED=$((SYNCED + 1))
+  done
+fi
 
-echo "[sync] $count MCP servers linked from $PROJECT."
+# Modo 2: .mcp.json en raíz del proyecto externo
+# (No se genera ext.*.json — los servers externos ya están definidos
+#  manualmente en mcp/servers/ con rutas vía variables de entorno)
+
+if [ "$SYNCED" -eq 0 ]; then
+  echo "[sync] No MCP servers found at $EXTERNAL_DIR or $MCP_JSON"
+  exit 0
+fi
+
+echo "[sync] $SYNCED MCP servers synced from $PROJECT."

@@ -16,10 +16,12 @@ El proyecto tiene en su `AGENTS.md`: `**Esta carpeta es un PUNTERO**` o un campo
 
 ## Validación
 
-```powershell
-$path = $env:<VAR_NAME>
-if (-not $path) { throw "Falta la variable de entorno <VAR_NAME>" }
-if (-not (Test-Path $path)) { throw "La carpeta $path no existe" }
+```bash
+path="${<VAR_NAME>:?Falta la variable de entorno <VAR_NAME>}"
+if [ ! -d "$path" ]; then
+  echo "La carpeta $path no existe" >&2
+  exit 1
+fi
 ```
 
 ## Consejo

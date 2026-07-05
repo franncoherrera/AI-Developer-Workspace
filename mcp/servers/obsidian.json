@@ -1,0 +1,12 @@
+{
+  "name": "obsidian",
+  "description": "Acceso al vault de Obsidian (knowledge-base) — leer, buscar, crear y editar notas markdown",
+  "command": "npx",
+  "args": [
+    "-y",
+    "@mauricio.wolff/mcp-obsidian",
+    "/home/franco/Qubik/AI-Developer-Workspace/knowledge-base"
+  ],
+  "env": {},
+  "disabled": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "browser",
+  "description": "Browser automation for testing web apps — controla Chrome/Edge con IA",
+  "command": "npx",
+  "args": [
+    "-y",
+    "@browsermcp/mcp"
+  ],
+  "env": {},
+  "disabled": false
+}

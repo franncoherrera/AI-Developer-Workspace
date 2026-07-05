@@ -11,4 +11,5 @@ You are reviewing **staged changes** (changes added with `git add`, pending comm
    - **Correctness**: Edge cases, errors, logical issues
    - **Dependencies**: Does it need other changes to work?
    - **Safety**: Would committing this break anything?
-6. **Recommendation**: Ready to commit, needs fixes, or missing changes
+6. **Visual test**: Si los cambios afectan la UI, levantá el proyecto (`npm run dev`, `cds watch`, etc.) y probalo con las herramientas `browser_*` — navegá a la URL, verificá que los cambios se vean bien, interactuá con la interfaz, tomá screenshots
+7. **Recommendation**: Ready to commit, needs fixes, or missing changes

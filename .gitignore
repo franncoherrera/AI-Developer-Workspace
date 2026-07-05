@@ -40,6 +40,9 @@ venv/
 # Docker
 .docker/
 
+# Generated MCP files (from external .mcp.json sync)
+/mcp/servers/ext.*.json
+
 # Secrets (keep these out!)
 .env
 .env.local

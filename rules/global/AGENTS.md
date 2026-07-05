@@ -27,8 +27,21 @@ Apply these rules unless overridden by technology or project-specific rules.
 
 - Load `projects/<name>/AGENTS.md` **first** — the project declares its technology here.
 - Based on the declared technology, load `rules/<technology>/AGENTS.md`.
-- If the project references a base project (e.g., `deprati_base`), load that too.
+- If the project references a base project via env var (e.g., `$<NAME>_BASE_PROJECT_PATH`), load docs/rules from that path too.
 - Check `prompts/<category>/` for reusable instructions when task matches.
+
+## Knowledge Base (Obsidian)
+
+- `knowledge-base/` es el vault de Obsidian — memoria persistente del workspace.
+- `knowledge-base/_proyectos/` contiene symlinks a la documentación externa de cada proyecto (specs, ADRs, docs, rules).
+- Usá las herramientas `obsidian_*` para buscar, leer y escribir notas markdown aquí.
+- Cuando trabajes en un proyecto, revisá sus docs en `knowledge-base/_proyectos/<nombre>/` vía Obsidian.
+
+## Browser Testing
+
+- Tenés herramientas `browser_*` para controlar un navegador Chrome/Edge.
+- usalas después de escribir o revisar código con UI: abrí el proyecto, navegá, llená formularios, tomá screenshots.
+- Cuando revises cambios (staged o PR) que afecten la interfaz, **siempre** levantá el proyecto y probalo visualmente con el browser antes de aprobar.
 
 ## Error Handling
 

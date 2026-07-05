@@ -5,7 +5,7 @@
 
 | Key | Name | Status | Rules | Prompts | Config | Template |
 |-----|------|--------|-------|---------|--------|----------|
-| `accelerator-sap-vue` | SAP CAP + Vue 3 | Active | ✅ | ✅ | ✅ | ✅ |
+| `accelerator-sap-vue` | SAP CAP + Vue 3 | Active | ✅ | ❌ | ✅ | ❌ |
 
 ## Adding a Technology
 

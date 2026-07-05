@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
+# scripts/commands/sync-commands.sh
+# Description: Sincroniza comandos slash (/qubik-*) desde un proyecto externo
+#   hacia .opencode/commands/. Lee DEPRATI_BASE_PROJECT_PATH del .env.
+# Usage: ./scripts/commands/sync-commands.sh
+# Depends: (ninguna — solo bash y find)
+# Env: DEPRATI_BASE_PROJECT_PATH (desde .env)
+# Failures:
+#   - Variable no seteada → exit 0 (setup incompleto, no es error)
+#   - Directorio origen sin .md files → exit 0
+#   - Archivo local con mismo nombre (no symlink) → warning, se saltea
 set -euo pipefail
 
 WORKSPACE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
