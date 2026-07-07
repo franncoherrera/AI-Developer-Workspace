@@ -1,1 +1,0 @@
-/home/franco/Qubik/deprati_base/.opencode/commands/qubik-sdd/qubik-check.md

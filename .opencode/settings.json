@@ -16,8 +16,5 @@
     "auto_load": true,
     "path": ".opencode/skills"
   },
-  "mcp": {
-    "servers_path": "mcp/servers",
-    "auto_discover": true
-  }
+  "mcp": {}
 }

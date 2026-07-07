@@ -1,0 +1,20 @@
+{
+  "name": "ai-developer-workspace",
+  "version": "1.0.0",
+  "description": "**Un entorno centralizado para desarrollo asistido por inteligencia artificial.**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "bootstrap": "bash scripts/bootstrap.sh",
+    "dev": "./opencode.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ecc-universal": "^2.0.0"
+  }
+}

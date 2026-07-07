@@ -3,21 +3,22 @@
 > Generado automáticamente por `scripts/docs/generate-scripts-ref.sh`.
 > Se actualiza al commitear si hay cambios en `scripts/`.
 
+## `scripts/bootstrap.sh`
+
 ## `scripts/commands/sync-commands.sh`
 
-Sincroniza comandos slash (/qubik-*) desde un proyecto externo hacia .opencode/commands/. Lee DEPRATI_BASE_PROJECT_PATH del .env.
+Sincroniza comandos slash desde proyectos externos hacia .opencode/commands/<proyecto>/<nombre>.md Los comandos quedan disponibles como /<proyecto>/<nombre>.
 
 **Uso:** `./scripts/commands/sync-commands.sh`
 
 **Dependencias:** (ninguna — solo bash y find)
 
-**Variables de entorno:** DEPRATI_BASE_PROJECT_PATH (desde .env)
+**Variables de entorno:** Lee .env, itera sobre todas las variables *_BASE_PROJECT_PATH
 
 **Posibles fallas:**
 
-- Variable no seteada → exit 0 (setup incompleto, no es error)
-- Directorio origen sin .md files → exit 0
-- Archivo local con mismo nombre (no symlink) → warning, se saltea
+- Sin variables seteadas → exit 0 (setup incompleto, no es error)
+- Sin .md files en origen → exit 0
 
 ## `scripts/docs/generate-scripts-ref.sh`
 
@@ -92,6 +93,14 @@ Sincroniza symlinks en knowledge-base/_proyectos/ con las variables de entorno *
 **Posibles fallas:**
 
 - Ninguno (idempotente)
+
+## `scripts/mcp/generate-config.sh`
+
+Genera/actualiza opencode.jsonc en la raíz del workspace a partir de mcp/servers/*.json. Solo reemplaza la sección "mcp", preservando el resto de la configuración.
+
+**Uso:** `./scripts/mcp/generate-config.sh`
+
+**Dependencias:** jq
 
 ## `scripts/mcp/sync.sh`
 
